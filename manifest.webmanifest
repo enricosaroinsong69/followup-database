@@ -1,0 +1,32 @@
+{
+  "name": "Follow Up Pelanggan — Daihatsu Tomohon",
+  "short_name": "Follow Up",
+  "description": "Follow up pelanggan lama dari database DO 2013 sampai Juli 2021: chat WhatsApp, telepon, AI Listening, dan pengingat.",
+  "start_url": "./index.html",
+  "scope": "./",
+  "display": "standalone",
+  "orientation": "portrait-primary",
+  "background_color": "#EEF1F5",
+  "theme_color": "#0F2E47",
+  "lang": "id",
+  "dir": "ltr",
+  "categories": ["business", "productivity"],
+  "icons": [
+    { "src": "icon-192.png", "sizes": "192x192", "type": "image/png" },
+    { "src": "icon-512.png", "sizes": "512x512", "type": "image/png" },
+    { "src": "icon-maskable.png", "sizes": "512x512", "type": "image/png", "purpose": "maskable" }
+  ],
+  "share_target": {
+    "action": "./index.html",
+    "method": "GET",
+    "params": { "title": "title", "text": "text", "url": "url" }
+  },
+  "shortcuts": [
+    {
+      "name": "Pengingat hari ini",
+      "short_name": "Pengingat",
+      "url": "./index.html#pengingat",
+      "icons": [{ "src": "icon-192.png", "sizes": "192x192" }]
+    }
+  ]
+}

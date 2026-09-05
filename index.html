@@ -1,0 +1,1378 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="theme-color" content="#0F2E47">
+<title>Follow Up Pelanggan — Daihatsu Tomohon</title>
+<link rel="manifest" href="manifest.webmanifest">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='14' fill='%230F2E47'/%3E%3Cpath d='M18 40c0-8 6-14 14-14s14 6 14 14' stroke='%23E60012' stroke-width='5' fill='none' stroke-linecap='round'/%3E%3Ccircle cx='32' cy='21' r='5' fill='%23fff'/%3E%3C/svg%3E">
+<style>
+  :root{
+    --paper:#EEF1F5; --card:#FFFFFF; --navy:#0F2E47; --navy-2:#1C4869;
+    --ink:#16283A; --ink-2:#5A6C7D; --line:#D6DEE7;
+    --red:#E60012; --wa:#0F7A43; --hot:#E8590C; --plan:#1565C0; --low:#7A8794;
+    --r:10px; --shadow:0 1px 2px rgba(15,46,71,.08), 0 4px 14px rgba(15,46,71,.06);
+  }
+  *{box-sizing:border-box}
+  html,body{margin:0;padding:0}
+  body{
+    background:var(--paper); color:var(--ink);
+    font:15px/1.5 Inter,"Segoe UI",Roboto,system-ui,-apple-system,sans-serif;
+    -webkit-text-size-adjust:100%;
+  }
+  h1,h2,h3,.num{font-family:"Barlow Condensed","Arial Narrow",Inter,sans-serif;letter-spacing:.2px}
+  button,input,select,textarea{font:inherit;color:inherit}
+  button{cursor:pointer;border:0;background:none}
+  a{color:var(--plan)}
+
+  /* ---------- header ---------- */
+  header{
+    position:sticky;top:0;z-index:40;background:var(--navy);color:#fff;
+    padding:10px 14px calc(10px + env(safe-area-inset-bottom,0px)/6);
+    box-shadow:0 2px 10px rgba(15,46,71,.25);
+  }
+  .brandrow{display:flex;align-items:center;gap:10px}
+  .mark{width:30px;height:30px;border-radius:8px;background:var(--red);display:grid;place-items:center;flex:0 0 auto}
+  .mark svg{width:18px;height:18px}
+  .brand h1{margin:0;font-size:21px;font-weight:600;line-height:1.1}
+  .brand p{margin:0;font-size:11.5px;color:#9FB6C9;letter-spacing:.3px}
+  .brand{flex:1;min-width:0}
+  .chip{
+    font-size:11.5px;padding:5px 10px;border-radius:999px;background:#204a6d;color:#CFE0EC;
+    display:inline-flex;align-items:center;gap:6px;white-space:nowrap;border:1px solid #2E5C82;
+  }
+  .chip b{width:7px;height:7px;border-radius:50%;background:#8FA4B5}
+  .chip.ok b{background:#37C871} .chip.ok{color:#BFEBD2}
+  .chip.kerja b{background:#FFC64D;animation:kedip 1s infinite}
+  .chip.gagal b{background:#FF6B6B} .chip.gagal{color:#FFC9C9}
+  @keyframes kedip{50%{opacity:.25}}
+  @media (prefers-reduced-motion:reduce){.chip.kerja b{animation:none}}
+
+  nav{display:flex;gap:2px;margin-top:10px;overflow-x:auto;scrollbar-width:none}
+  nav::-webkit-scrollbar{display:none}
+  nav button{
+    padding:8px 13px;border-radius:8px 8px 0 0;color:#A9C0D2;font-size:13.5px;font-weight:500;
+    white-space:nowrap;border-bottom:3px solid transparent;
+  }
+  nav button[aria-selected=true]{background:var(--paper);color:var(--navy);font-weight:600;border-bottom-color:var(--red)}
+  nav button:focus-visible{outline:2px solid #7FC3FF;outline-offset:-2px}
+
+  main{padding:14px 14px 90px;max-width:1180px;margin:0 auto}
+  .panel{display:none} .panel.aktif{display:block}
+
+  /* ---------- filter ---------- */
+  .kotak{background:var(--card);border:1px solid var(--line);border-radius:var(--r);box-shadow:var(--shadow)}
+  .filter{padding:12px}
+  .cari{display:flex;gap:8px;margin-bottom:10px}
+  .cari input{
+    flex:1;min-width:0;padding:10px 12px;border:1px solid var(--line);border-radius:8px;background:#F8FAFC;
+  }
+  .cari input:focus{outline:2px solid var(--navy-2);outline-offset:-1px;background:#fff}
+  .grid5{display:grid;gap:8px;grid-template-columns:repeat(auto-fit,minmax(150px,1fr))}
+  .pilih{position:relative}
+  .pilih>button{
+    width:100%;text-align:left;padding:9px 11px;border:1px solid var(--line);border-radius:8px;background:#F8FAFC;
+    font-size:13.5px;display:flex;justify-content:space-between;gap:8px;align-items:center;
+  }
+  .pilih>button span:first-child{overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+  .pilih>button .hit{background:var(--navy);color:#fff;border-radius:999px;padding:1px 7px;font-size:11px;flex:0 0 auto}
+  .menu{
+    display:none;position:absolute;z-index:30;top:calc(100% + 4px);left:0;right:0;max-height:280px;overflow:auto;
+    background:#fff;border:1px solid var(--line);border-radius:8px;box-shadow:0 10px 30px rgba(15,46,71,.18);padding:6px;
+  }
+  .menu.buka{display:block}
+  .menu input[type=search]{width:100%;padding:7px 9px;border:1px solid var(--line);border-radius:6px;margin-bottom:6px}
+  .menu label{display:flex;gap:8px;align-items:center;padding:6px 7px;border-radius:6px;font-size:13.5px;cursor:pointer}
+  .menu label:hover{background:#F1F5F9}
+  .pil{display:flex;flex-wrap:wrap;gap:6px;margin-top:10px}
+  .pil button{
+    padding:6px 12px;border-radius:999px;border:1px solid var(--line);background:#fff;font-size:12.5px;font-weight:500;color:var(--ink-2)
+  }
+  .pil button[aria-pressed=true]{background:var(--navy);border-color:var(--navy);color:#fff}
+  .baris-aksi{display:flex;flex-wrap:wrap;gap:8px;margin-top:10px}
+  .tbl{padding:8px 13px;border-radius:8px;border:1px solid var(--line);background:#fff;font-size:13px;font-weight:500}
+  .tbl:hover{background:#F1F5F9}
+  .tbl.utama{background:var(--navy);color:#fff;border-color:var(--navy)}
+  .tbl.merah{background:var(--red);color:#fff;border-color:var(--red)}
+
+  /* ---------- statistik ---------- */
+  .stat{display:grid;gap:8px;grid-template-columns:repeat(auto-fit,minmax(104px,1fr));margin:12px 0}
+  .stat div{background:var(--card);border:1px solid var(--line);border-radius:var(--r);padding:10px 12px}
+  .stat .num{font-size:26px;font-weight:600;line-height:1}
+  .stat small{display:block;color:var(--ink-2);font-size:11.5px;margin-top:3px}
+  .stat .hot .num{color:var(--hot)} .stat .plan .num{color:var(--plan)}
+  .stat .due .num{color:var(--red)}
+
+  /* ---------- kartu ---------- */
+  .daftar{display:grid;gap:10px}
+  .kartu{
+    background:var(--card);border:1px solid var(--line);border-left:5px solid #C8D3DE;
+    border-radius:var(--r);padding:12px;box-shadow:var(--shadow)
+  }
+  .kartu.s-HOT{border-left-color:var(--hot)}
+  .kartu.s-PLAN{border-left-color:var(--plan)}
+  .kartu.s-LOW{border-left-color:var(--low)}
+  .kartu.jatuh{background:#FFF8F3}
+  .kepala{display:flex;gap:10px;align-items:flex-start}
+  .kepala h3{margin:0;font-size:18px;font-weight:600;line-height:1.15;flex:1;min-width:0;word-break:break-word}
+  .tag{font-size:10.5px;font-weight:600;padding:3px 8px;border-radius:999px;white-space:nowrap;flex:0 0 auto}
+  .t-HOT{background:#FFF0E6;color:var(--hot);border:1px solid #FFD5B8}
+  .t-PLAN{background:#E7F0FB;color:var(--plan);border:1px solid #C3DAF5}
+  .t-LOW{background:#F0F3F6;color:var(--low);border:1px solid #DCE3EA}
+  .t-WA{background:#FFECEC;color:var(--red);border:1px solid #FFC9C9}
+  .rinci{margin:7px 0 0;font-size:13px;color:var(--ink-2);line-height:1.65}
+  .rinci b{color:var(--ink);font-weight:600}
+  .nohp{font-family:ui-monospace,"JetBrains Mono",Menlo,Consolas,monospace;font-size:13.5px;color:var(--ink);font-weight:500}
+  .catat{
+    margin-top:9px;padding:9px 11px;background:#F6F9FC;border-left:3px solid var(--navy-2);border-radius:0 6px 6px 0;
+    font-size:13px;line-height:1.55
+  }
+  .catat em{color:var(--ink-2);font-style:normal;font-size:11.5px;display:block;margin-top:4px}
+  .aksi{display:flex;flex-wrap:wrap;gap:7px;margin-top:11px}
+  .aksi button{
+    flex:1 1 auto;min-width:96px;padding:9px 10px;border-radius:8px;font-size:13px;font-weight:600;
+    display:inline-flex;align-items:center;justify-content:center;gap:6px;border:1px solid var(--line);background:#fff
+  }
+  .aksi .wa{background:var(--wa);border-color:var(--wa);color:#fff}
+  .aksi .tel{background:var(--navy);border-color:var(--navy);color:#fff}
+  .aksi .ai{background:#fff;border-color:var(--plan);color:var(--plan)}
+  .aksi button:focus-visible{outline:2px solid var(--navy);outline-offset:2px}
+  .aksi svg{width:15px;height:15px;flex:0 0 auto}
+
+  .kosong{text-align:center;padding:48px 20px;color:var(--ink-2)}
+  .kosong h3{font-size:22px;margin:0 0 6px;color:var(--ink)}
+
+  /* ---------- modal ---------- */
+  .tirai{
+    position:fixed;inset:0;background:rgba(11,30,45,.55);z-index:60;display:none;
+    align-items:flex-end;justify-content:center;padding:0
+  }
+  .tirai.buka{display:flex}
+  .modal{
+    background:var(--paper);width:100%;max-width:620px;max-height:92vh;overflow:auto;
+    border-radius:14px 14px 0 0;padding:16px 16px calc(20px + env(safe-area-inset-bottom,0px))
+  }
+  @media(min-width:640px){.tirai{align-items:center}.modal{border-radius:14px}}
+  .modal h2{margin:0 0 2px;font-size:22px;font-weight:600}
+  .modal .sub{margin:0 0 14px;color:var(--ink-2);font-size:13px}
+  .isian{margin-bottom:12px}
+  .isian label{display:block;font-size:12.5px;font-weight:600;color:var(--ink-2);margin-bottom:5px}
+  .isian input,.isian select,.isian textarea{
+    width:100%;padding:10px 11px;border:1px solid var(--line);border-radius:8px;background:#fff
+  }
+  .isian textarea{min-height:88px;resize:vertical;line-height:1.55}
+  .isian input:focus,.isian select:focus,.isian textarea:focus{outline:2px solid var(--navy-2);outline-offset:-1px}
+  .radio{display:flex;gap:7px;flex-wrap:wrap}
+  .radio button{flex:1;min-width:88px;padding:10px;border-radius:8px;border:1px solid var(--line);background:#fff;font-weight:600;font-size:13.5px}
+  .radio button[aria-pressed=true].r-HOT{background:var(--hot);border-color:var(--hot);color:#fff}
+  .radio button[aria-pressed=true].r-PLAN{background:var(--plan);border-color:var(--plan);color:#fff}
+  .radio button[aria-pressed=true].r-LOW{background:var(--low);border-color:var(--low);color:#fff}
+  .cepat{display:flex;gap:6px;flex-wrap:wrap;margin-top:7px}
+  .cepat button{padding:6px 11px;border-radius:999px;border:1px dashed var(--line);background:#fff;font-size:12px;color:var(--ink-2)}
+  .tombolbar{display:flex;gap:8px;margin-top:16px}
+  .tombolbar button{flex:1;padding:12px;border-radius:9px;font-weight:600;font-size:14.5px}
+  .tombolbar .simpan{background:var(--navy);color:#fff}
+  .tombolbar .batal{background:#fff;border:1px solid var(--line)}
+  .sakelar{display:flex;align-items:center;gap:10px;padding:10px 12px;background:#fff;border:1px solid var(--line);border-radius:8px}
+  .sakelar input{width:18px;height:18px;flex:0 0 auto}
+  .sakelar span{font-size:13.5px}
+
+  /* ---------- AI listening ---------- */
+  .mode{display:flex;gap:6px;margin-bottom:12px}
+  .mode button{flex:1;padding:9px;border-radius:8px;border:1px solid var(--line);background:#fff;font-size:13.5px;font-weight:500}
+  .mode button[aria-selected=true]{background:var(--navy);color:#fff;border-color:var(--navy)}
+  .mikro{text-align:center;padding:14px 0}
+  .rec{
+    width:82px;height:82px;border-radius:50%;background:var(--red);color:#fff;display:inline-grid;place-items:center;
+    box-shadow:0 6px 20px rgba(230,0,18,.3)
+  }
+  .rec svg{width:34px;height:34px}
+  .rec.on{animation:denyut 1.4s infinite}
+  @keyframes denyut{0%{box-shadow:0 0 0 0 rgba(230,0,18,.45)}70%{box-shadow:0 0 0 22px rgba(230,0,18,0)}100%{box-shadow:0 0 0 0 rgba(230,0,18,0)}}
+  @media (prefers-reduced-motion:reduce){.rec.on{animation:none}}
+  .mikro p{margin:10px 0 0;font-size:13px;color:var(--ink-2)}
+  .transkrip{
+    background:#fff;border:1px solid var(--line);border-radius:8px;padding:11px;min-height:110px;max-height:230px;
+    overflow:auto;font-size:13.5px;line-height:1.6;white-space:pre-wrap
+  }
+  .transkrip .sementara{color:var(--ink-2);font-style:italic}
+  .hasilai{margin-top:12px;padding:13px;border-radius:10px;background:#fff;border:1px solid var(--line)}
+  .hasilai .vonis{font-family:"Barlow Condensed",sans-serif;font-size:28px;font-weight:600;line-height:1}
+  .hasilai ul{margin:9px 0 0;padding-left:18px;font-size:13px;color:var(--ink-2);line-height:1.7}
+  .bar{height:7px;border-radius:4px;background:#E4EAF0;overflow:hidden;margin:9px 0 3px}
+  .bar i{display:block;height:100%;border-radius:4px}
+
+  /* ---------- pengingat ---------- */
+  .lewat{border-left-color:var(--red)!important}
+  .judulblok{margin:18px 0 9px;font-size:19px;font-weight:600}
+  .judulblok:first-child{margin-top:2px}
+
+  /* ---------- pengaturan ---------- */
+  .peta{display:grid;gap:8px;grid-template-columns:repeat(auto-fit,minmax(210px,1fr))}
+  .tips{font-size:12.5px;color:var(--ink-2);line-height:1.7;background:#fff;border:1px solid var(--line);
+    border-radius:var(--r);padding:12px 14px;margin-top:12px}
+  .tips ol{margin:6px 0 0;padding-left:20px} .tips li{margin-bottom:5px}
+  .tips code{background:#F1F5F9;padding:1px 5px;border-radius:4px;font-size:12px}
+
+  .roti{
+    position:fixed;left:50%;transform:translateX(-50%);bottom:calc(20px + env(safe-area-inset-bottom,0px));
+    background:var(--navy);color:#fff;padding:11px 18px;border-radius:999px;font-size:13.5px;z-index:90;
+    box-shadow:0 6px 24px rgba(15,46,71,.35);max-width:90vw;text-align:center
+  }
+  .sembunyi{display:none!important}
+</style>
+</head>
+<body>
+
+<header>
+  <div class="brandrow">
+    <div class="mark">
+      <svg viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2.2" stroke-linecap="round">
+        <path d="M4 5h16l-2 6H6L4 5Z"/><circle cx="8.5" cy="17" r="1.6"/><circle cx="16" cy="17" r="1.6"/>
+      </svg>
+    </div>
+    <div class="brand">
+      <h1>Follow Up Pelanggan</h1>
+      <p id="subjudul">Database DO 2013 – Juli 2021</p>
+    </div>
+    <button class="chip" id="chipSync" title="Ketuk untuk sinkron ulang"><b></b><span>Belum tersambung</span></button>
+  </div>
+  <nav role="tablist">
+    <button role="tab" aria-selected="true" data-tab="daftar">Daftar pelanggan</button>
+    <button role="tab" aria-selected="false" data-tab="pengingat">Pengingat <span id="lonceng"></span></button>
+    <button role="tab" aria-selected="false" data-tab="pengaturan">Pengaturan</button>
+  </nav>
+</header>
+
+<main>
+  <!-- ============ DAFTAR ============ -->
+  <section class="panel aktif" id="p-daftar">
+    <div class="kotak filter">
+      <div class="cari">
+        <input type="search" id="cari" placeholder="Cari nama, nomor HP, nomor polisi, atau alamat">
+      </div>
+      <div class="grid5" id="filterGrid"></div>
+      <div class="pil" id="pilStatus">
+        <button data-st="" aria-pressed="true">Semua</button>
+        <button data-st="PLAN" aria-pressed="false">Plan SPK</button>
+        <button data-st="HOT" aria-pressed="false">Hot</button>
+        <button data-st="LOW" aria-pressed="false">Low</button>
+        <button data-st="BARU" aria-pressed="false">Belum dihubungi</button>
+        <button data-st="NOWA" aria-pressed="false">Bukan nomor WA</button>
+      </div>
+      <div class="baris-aksi">
+        <button class="tbl" id="btnReset">Hapus semua filter</button>
+        <button class="tbl" id="btnVcfMassal">Simpan semua ke kontak HP</button>
+        <button class="tbl" id="btnCsv">Unduh CSV</button>
+        <button class="tbl utama" id="btnSync">Sinkron dari spreadsheet</button>
+      </div>
+    </div>
+
+    <div class="stat" id="stat"></div>
+    <div class="daftar" id="daftar"></div>
+    <div id="muatLagi" style="text-align:center;margin-top:14px"></div>
+  </section>
+
+  <!-- ============ PENGINGAT ============ -->
+  <section class="panel" id="p-pengingat">
+    <div class="kotak filter">
+      <div class="baris-aksi" style="margin-top:0">
+        <button class="tbl utama" id="btnIzinNotif">Nyalakan notifikasi</button>
+        <button class="tbl" id="btnIcs">Unduh jadwal ke kalender</button>
+      </div>
+    </div>
+    <div id="isiPengingat"></div>
+  </section>
+
+  <!-- ============ PENGATURAN ============ -->
+  <section class="panel" id="p-pengaturan">
+    <div class="kotak filter">
+      <div class="isian">
+        <label for="api">Alamat Web App Apps Script (URL yang berakhiran /exec)</label>
+        <input id="api" type="url" placeholder="https://script.google.com/macros/s/..../exec">
+      </div>
+      <div class="baris-aksi" style="margin-top:0">
+        <button class="tbl utama" id="btnHubung">Hubungkan dan ambil data</button>
+        <button class="tbl" id="btnUlangPenuh">Ambil ulang semua baris</button>
+      </div>
+      <p class="sub" id="statusApi" style="margin:10px 0 0;color:var(--ink-2);font-size:13px"></p>
+    </div>
+
+    <h2 class="judulblok">Pemetaan kolom</h2>
+    <div class="kotak filter">
+      <p class="sub" style="margin:0 0 12px;color:var(--ink-2);font-size:13px">
+        Tentukan kolom sheet mana yang dipakai untuk tiap isian. Terisi otomatis saat pertama menyambung.
+      </p>
+      <div class="peta" id="peta"></div>
+      <div class="baris-aksi">
+        <button class="tbl utama" id="btnPeta">Simpan pemetaan dan muat ulang</button>
+      </div>
+    </div>
+
+    <h2 class="judulblok">Pesan dan penamaan</h2>
+    <div class="kotak filter">
+      <div class="isian">
+        <label for="templat">Pesan pembuka WhatsApp</label>
+        <textarea id="templat"></textarea>
+        <div class="cepat">
+          <button data-sisip="{nama}">{nama}</button>
+          <button data-sisip="{tipe}">{tipe}</button>
+          <button data-sisip="{tahun}">{tahun}</button>
+          <button data-sisip="{kota}">{kota}</button>
+          <button data-sisip="{nopol}">{nopol}</button>
+          <button data-sisip="{saya}">{saya}</button>
+        </div>
+      </div>
+      <div class="isian">
+        <label for="saya">Nama Anda (mengisi {saya})</label>
+        <input id="saya" placeholder="Enrico — Daihatsu Tomohon">
+      </div>
+      <div class="isian">
+        <label for="awalan">Awalan nama kontak</label>
+        <input id="awalan" value="Cs">
+        <p class="sub" style="margin:6px 0 0;font-size:12.5px;color:var(--ink-2)">
+          Contoh hasil: <b id="contohNama">Cs JENNY NOVA LEMBONG 06 Sep26</b>
+        </p>
+      </div>
+      <div class="isian">
+        <label for="bhs">Singkatan bulan pada nama kontak</label>
+        <select id="bhs">
+          <option value="ID">Indonesia — Jan, Feb, Mar, Apr, Mei, Agu, Okt, Des</option>
+          <option value="EN">Inggris — Jan, Feb, Mar, Apr, May, Aug, Oct, Dec</option>
+        </select>
+      </div>
+      <div class="baris-aksi">
+        <button class="tbl utama" id="btnSimpanSet">Simpan pengaturan</button>
+      </div>
+    </div>
+
+    <div class="tips">
+      <b>Cara memeriksa nomor mana yang punya WhatsApp</b>
+      <ol>
+        <li>Di tab Daftar pelanggan, saring dulu (misalnya tahun 2019 saja), lalu tekan <b>Simpan semua ke kontak HP</b>.</li>
+        <li>Buka berkas <code>.vcf</code> yang terunduh, pilih Impor ke kontak.</li>
+        <li>Buka WhatsApp, tarik daftar kontak ke bawah untuk menyegarkan. Nama berawalan <b>Cs</b> yang muncul berarti punya WhatsApp.</li>
+        <li>Yang tidak muncul, tandai <b>Bukan nomor WhatsApp</b> lewat tombol Catatan supaya tersimpan di spreadsheet.</li>
+      </ol>
+      Nomor yang jelas bukan seluler (nomor rumah, kantor, atau tulisan NA) sudah ditandai otomatis oleh aplikasi.
+    </div>
+  </section>
+</main>
+
+<!-- ============ MODAL CATATAN ============ -->
+<div class="tirai" id="tiraiCatatan">
+  <div class="modal" role="dialog" aria-modal="true" aria-labelledby="jdlCatatan">
+    <h2 id="jdlCatatan">Catatan follow up</h2>
+    <p class="sub" id="subCatatan"></p>
+
+    <div class="isian">
+      <label>Tanda dari jawaban customer</label>
+      <div class="radio" id="pilihStatus">
+        <button class="r-LOW"  data-v="LOW"  aria-pressed="false">Low</button>
+        <button class="r-HOT"  data-v="HOT"  aria-pressed="false">Hot</button>
+        <button class="r-PLAN" data-v="PLAN" aria-pressed="false">Plan SPK</button>
+      </div>
+    </div>
+
+    <div class="isian">
+      <label for="hasil">Keterangan hasil pembicaraan terakhir</label>
+      <textarea id="hasil" placeholder="Contoh: Minta simulasi kredit Terios DP 40 juta, minta ditelepon lagi hari Sabtu."></textarea>
+      <div class="cepat" id="cepatHasil"></div>
+    </div>
+
+    <div class="isian">
+      <label for="rencana">Ingatkan saya follow up lagi tanggal</label>
+      <input type="date" id="rencana">
+      <div class="cepat">
+        <button data-hari="1">Besok</button>
+        <button data-hari="3">3 hari</button>
+        <button data-hari="7">1 minggu</button>
+        <button data-hari="30">1 bulan</button>
+        <button data-hari="">Kosongkan</button>
+      </div>
+    </div>
+
+    <div class="isian">
+      <label for="hpEdit">Nomor HP (perubahan ikut tersimpan ke spreadsheet)</label>
+      <input id="hpEdit" inputmode="tel">
+    </div>
+
+    <div class="isian">
+      <div class="sakelar">
+        <input type="checkbox" id="bukanWa">
+        <span><label for="bukanWa" style="display:inline;font-weight:600;color:var(--ink)">Bukan nomor WhatsApp</label><br>
+        <small style="color:var(--ink-2)">Kartu akan diberi tanda merah dan dilewati saat kirim massal.</small></span>
+      </div>
+    </div>
+
+    <div class="tombolbar">
+      <button class="batal" id="batalCatatan">Batal</button>
+      <button class="simpan" id="simpanCatatan">Simpan ke spreadsheet</button>
+    </div>
+  </div>
+</div>
+
+<!-- ============ MODAL AI LISTENING ============ -->
+<div class="tirai" id="tiraiAi">
+  <div class="modal" role="dialog" aria-modal="true" aria-labelledby="jdlAi">
+    <h2 id="jdlAi">AI Listening</h2>
+    <p class="sub" id="subAi"></p>
+
+    <div class="mode" role="tablist">
+      <button role="tab" aria-selected="true" data-m="suara">Rekam percakapan</button>
+      <button role="tab" aria-selected="false" data-m="teks">Tempel chat WhatsApp</button>
+    </div>
+
+    <div id="modeSuara">
+      <div class="mikro">
+        <button class="rec" id="btnRec" aria-label="Mulai merekam">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round">
+            <rect x="9" y="2" width="6" height="12" rx="3"/><path d="M5 11a7 7 0 0 0 14 0M12 18v4"/>
+          </svg>
+        </button>
+        <p id="statusRec">Ketuk untuk mulai mendengarkan. Aktifkan speaker saat menelepon supaya suara customer ikut terekam.</p>
+      </div>
+    </div>
+
+    <div id="modeTeks" class="sembunyi">
+      <div class="isian">
+        <label for="tempel">Tempel percakapan di sini</label>
+        <textarea id="tempel" style="min-height:150px" placeholder="Buka chat di WhatsApp, tekan lama pesannya, pilih Salin, lalu tempel di sini. Bisa juga pakai menu Ekspor chat."></textarea>
+      </div>
+    </div>
+
+    <div class="isian">
+      <label>Transkrip</label>
+      <div class="transkrip" id="transkrip">Belum ada teks.</div>
+    </div>
+
+    <div id="hasilAi"></div>
+
+    <div class="tombolbar">
+      <button class="batal" id="batalAi">Tutup</button>
+      <button class="simpan" id="analisaAi">Analisa jawaban customer</button>
+    </div>
+    <div class="tombolbar sembunyi" id="barTerap">
+      <button class="simpan" id="terapAi" style="background:var(--wa)">Pakai hasil ini dan buka catatan</button>
+    </div>
+  </div>
+</div>
+
+<script>
+/* ================================================================
+   Follow Up Pelanggan — Daihatsu Tomohon
+   Sumber data: spreadsheet DO DHT 2013 - JUL 2021
+   ================================================================ */
+
+const KUNCI_SET = 'fu_set_v1', KUNCI_CATATAN = 'fu_catatan_v1', KUNCI_ANTRE = 'fu_antre_v1';
+const URUT_PETA = ['nama','hp','hp2','kota','tipe','varian','salesman','tanggal','tahun','bulan','alamat','cabang','leasing','nopol','faktur'];
+const LABEL_PETA = {
+  nama:'Nama customer', hp:'Nomor HP utama', hp2:'Nomor HP cadangan', kota:'Kota',
+  tipe:'Tipe kendaraan', varian:'Varian lengkap', salesman:'Nama salesman', tanggal:'Tanggal DO',
+  tahun:'Tahun', bulan:'Bulan', alamat:'Alamat', cabang:'Cabang', leasing:'Leasing',
+  nopol:'Nomor polisi', faktur:'Nomor faktur'
+};
+const BULAN_ID = ['Jan','Feb','Mar','Apr','Mei','Jun','Jul','Agu','Sep','Okt','Nov','Des'];
+const BULAN_EN = ['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'];
+const BULAN_PANJANG = ['Januari','Februari','Maret','April','Mei','Juni','Juli','Agustus','September','Oktober','November','Desember'];
+
+const setelan = Object.assign({
+  api:'', peta:null, kolom:[], sheet:'',
+  templat:'Selamat siang Bapak/Ibu {nama}, saya {saya}. Mohon izin, apakah {tipe} tahun {tahun} masih dipakai dan sehat kondisinya? Kalau ada rencana tambah atau ganti unit, saya siap bantu hitungkan.',
+  saya:'Enrico — Daihatsu Tomohon', awalan:'Cs', bhs:'ID'
+}, JSON.parse(localStorage.getItem(KUNCI_SET) || '{}'));
+
+let DATA = [];                                              // seluruh baris dari sheet
+let CATATAN = JSON.parse(localStorage.getItem(KUNCI_CATATAN) || '{}');
+let ANTRE = JSON.parse(localStorage.getItem(KUNCI_ANTRE) || '[]');
+let TERSARING = [], tampilSampai = 0, ridAktif = null, statusPilih = '';
+const filterAktif = { tahun:new Set(), bulan:new Set(), salesman:new Set(), tipe:new Set(), kota:new Set() };
+let statusPil = '';
+
+/* ---------------------------------------------------- penyimpanan lokal */
+
+function simpanSet(){ localStorage.setItem(KUNCI_SET, JSON.stringify(setelan)); }
+function simpanCatatanLokal(){ localStorage.setItem(KUNCI_CATATAN, JSON.stringify(CATATAN)); }
+function simpanAntre(){ localStorage.setItem(KUNCI_ANTRE, JSON.stringify(ANTRE)); }
+
+const db = {
+  buka(){ return new Promise((res,rej)=>{ const r=indexedDB.open('followup',1);
+    r.onupgradeneeded=()=>r.result.createObjectStore('gudang');
+    r.onsuccess=()=>res(r.result); r.onerror=()=>rej(r.error); }); },
+  async set(k,v){ const d=await this.buka(); return new Promise((res,rej)=>{ const t=d.transaction('gudang','readwrite');
+    t.objectStore('gudang').put(v,k); t.oncomplete=()=>res(); t.onerror=()=>rej(t.error); }); },
+  async get(k){ const d=await this.buka(); return new Promise((res,rej)=>{ const t=d.transaction('gudang','readonly');
+    const q=t.objectStore('gudang').get(k); q.onsuccess=()=>res(q.result); q.onerror=()=>rej(q.error); }); }
+};
+
+/* -------------------------------------------------------------- bantuan */
+
+const $ = s => document.querySelector(s);
+const $$ = s => Array.from(document.querySelectorAll(s));
+function esc(s){ return String(s==null?'':s).replace(/[&<>"']/g, c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c])); }
+
+let jamRoti;
+function roti(pesan, ms=2600){
+  clearTimeout(jamRoti);
+  let el = $('#roti');
+  if(!el){ el=document.createElement('div'); el.id='roti'; el.className='roti'; document.body.appendChild(el); }
+  el.textContent = pesan; el.style.display='block';
+  jamRoti = setTimeout(()=>{ el.style.display='none'; }, ms);
+}
+
+function chip(kelas, teks){
+  const c = $('#chipSync');
+  c.className = 'chip ' + kelas;
+  c.querySelector('span').textContent = teks;
+}
+
+/* --------------------------------------------------------- nomor telepon */
+
+/** 08xx / +62 8xx / 62 8xx / 8xx  →  628xxxxxxxxx */
+function normalHp(mentah){
+  let s = String(mentah||'').replace(/[^\d+]/g,'');
+  if(!s) return '';
+  s = s.replace(/^\+/,'');
+  if(s.startsWith('620')) s = '62' + s.slice(3);
+  else if(s.startsWith('0')) s = '62' + s.slice(1);
+  else if(s.startsWith('8')) s = '62' + s;
+  else if(!s.startsWith('62')) s = '62' + s;
+  return s;
+}
+/** true kalau bentuknya nomor seluler Indonesia yang masuk akal */
+function seluler(hp62){
+  return /^628[1-9]\d{6,11}$/.test(hp62);
+}
+function hpTampil(hp62){
+  if(!hp62) return '';
+  const s = hp62.replace(/^62/,'0');
+  return s.replace(/(\d{4})(\d{4})(\d{0,6})/, (m,a,b,c)=> c ? `${a}-${b}-${c}` : `${a}-${b}`);
+}
+
+/* -------------------------------------------------------------- tanggal */
+
+function uraiTgl(s){
+  if(!s) return null;
+  s = String(s).trim();
+  let m = s.match(/^(\d{1,2})[.\/-](\d{1,2})[.\/-](\d{4})/);
+  if(m) return new Date(+m[3], +m[2]-1, +m[1]);
+  m = s.match(/^(\d{4})-(\d{1,2})-(\d{1,2})/);
+  if(m) return new Date(+m[1], +m[2]-1, +m[3]);
+  return null;
+}
+function hariIni(){ const d=new Date(); d.setHours(0,0,0,0); return d; }
+function isoTgl(d){ return d.getFullYear()+'-'+String(d.getMonth()+1).padStart(2,'0')+'-'+String(d.getDate()).padStart(2,'0'); }
+function tglIndo(iso){
+  const d = uraiTgl(iso); if(!d) return '';
+  return d.getDate()+' '+BULAN_PANJANG[d.getMonth()]+' '+d.getFullYear();
+}
+/** "06 Sep26" */
+function capTgl(d){
+  const bl = setelan.bhs==='EN' ? BULAN_EN : BULAN_ID;
+  return String(d.getDate()).padStart(2,'0') + ' ' + bl[d.getMonth()] + String(d.getFullYear()).slice(2);
+}
+function namaKontak(rec, tgl){
+  return `${setelan.awalan||'Cs'} ${(rec.nama||'').toUpperCase()} ${capTgl(tgl||new Date())}`.replace(/\s+/g,' ').trim();
+}
+
+/* ------------------------------------------------------- jembatan server */
+
+function jsonp(params){
+  return new Promise((res, rej)=>{
+    if(!setelan.api) return rej(new Error('Alamat Web App belum diisi di Pengaturan.'));
+    const cb = 'cb'+Math.random().toString(36).slice(2);
+    const s = document.createElement('script');
+    const jam = setTimeout(()=>{ bersih(); rej(new Error('Server tidak menjawab. Periksa alamat /exec dan izin akses Anyone.')); }, 60000);
+    function bersih(){ clearTimeout(jam); delete window[cb]; s.remove(); }
+    window[cb] = d => { bersih(); res(d); };
+    s.onerror = () => { bersih(); rej(new Error('Gagal memuat data dari server.')); };
+    s.src = setelan.api + '?' + new URLSearchParams(Object.assign({callback:cb}, params));
+    document.body.appendChild(s);
+  });
+}
+
+async function kirim(muatan){
+  const r = await fetch(setelan.api, {
+    method:'POST', headers:{'Content-Type':'text/plain;charset=utf-8'},
+    body: JSON.stringify(muatan)
+  });
+  return r.json();
+}
+
+/* --------------------------------------------------------- ambil data */
+
+function petaAktif(){
+  const p = setelan.peta || {};
+  const kunci = [], indeks = [];
+  URUT_PETA.forEach(k => { if(typeof p[k]==='number' && p[k]>=0){ kunci.push(k); indeks.push(p[k]); } });
+  return { kunci, indeks };
+}
+
+async function sambung(){
+  chip('kerja','Menyambung…');
+  const meta = await jsonp({action:'meta'});
+  if(!meta.ok) throw new Error(meta.error||'Gagal membaca sheet');
+  setelan.kolom = meta.kolom; setelan.sheet = meta.sheet;
+  if(!setelan.peta) setelan.peta = meta.tebakan;
+  simpanSet();
+  $('#subjudul').textContent = `${meta.sheet} — ${meta.total.toLocaleString('id-ID')} baris`;
+  gambarPeta();
+  return meta;
+}
+
+async function tarikSemua(paksa){
+  const meta = await sambung();
+  const { kunci, indeks } = petaAktif();
+  if(!indeks.length) throw new Error('Pemetaan kolom masih kosong.');
+
+  const total = meta.total, ukuran = 2000, hasil = [];
+  for(let mulai=0; mulai<total; mulai+=ukuran){
+    chip('kerja', `Mengambil ${Math.min(mulai+ukuran,total).toLocaleString('id-ID')} / ${total.toLocaleString('id-ID')}`);
+    const bagian = await jsonp({action:'rows', start:mulai, limit:ukuran, pick:indeks.join(',')});
+    if(!bagian.ok) throw new Error(bagian.error||'Gagal mengambil baris');
+    bagian.rows.forEach(b => hasil.push(rakit(b, kunci)));
+    if(!bagian.jumlah) break;
+  }
+  DATA = hasil;
+  await db.set('baris', DATA);
+  await db.set('waktu', Date.now());
+
+  const c = await jsonp({action:'catatan'});
+  if(c.ok){ CATATAN = {}; c.catatan.forEach(n => CATATAN[n.rid] = n); simpanCatatanLokal(); }
+
+  chip('ok', `${DATA.length.toLocaleString('id-ID')} baris siap`);
+  bangunFilter(); saring(); gambarPengingat();
+  return DATA.length;
+}
+
+function rakit(baris, kunci){
+  const o = { rid: baris[0] };
+  kunci.forEach((k,i) => o[k] = baris[i+1] || '');
+  const d = uraiTgl(o.tanggal);
+  o.tgl = d;
+  o.thn = o.tahun || (d ? String(d.getFullYear()) : '');
+  o.bln = d ? d.getMonth()+1 : (o.bulan ? bulanDariTeks(o.bulan) : 0);
+  const hpA = normalHp(o.hp), hpB = normalHp(o.hp2);
+  o.wa = seluler(hpA) ? hpA : (seluler(hpB) ? hpB : '');
+  o.hpAda = hpA || hpB;
+  o.cari = [o.nama, o.hp, o.hp2, o.nopol, o.alamat, o.kota, o.varian].join(' ').toUpperCase();
+  return o;
+}
+function bulanDariTeks(t){
+  const u = String(t).toUpperCase();
+  for(let i=0;i<12;i++) if(u.indexOf(BULAN_PANJANG[i].toUpperCase())===0 || u.indexOf(BULAN_ID[i].toUpperCase())===0) return i+1;
+  return 0;
+}
+
+/* ------------------------------------------------------------- filter UI */
+
+function nilaiUnik(ambil){
+  const s = new Set();
+  DATA.forEach(r => { const v = ambil(r); if(v) s.add(v); });
+  return Array.from(s).sort((a,b)=> String(a).localeCompare(String(b),'id',{numeric:true}));
+}
+
+function bangunFilter(){
+  const def = [
+    ['tahun','Tahun', nilaiUnik(r=>r.thn).reverse()],
+    ['bulan','Bulan', BULAN_PANJANG.map((n,i)=>({v:String(i+1), t:n})).filter(o=>DATA.some(r=>r.bln===+o.v))],
+    ['salesman','Salesman', nilaiUnik(r=>r.salesman)],
+    ['tipe','Tipe', nilaiUnik(r=>r.tipe)],
+    ['kota','Kota', nilaiUnik(r=>r.kota)]
+  ];
+  $('#filterGrid').innerHTML = def.map(([k,judul,opsi])=>{
+    const daftar = opsi.map(o => typeof o==='object' ? o : {v:o,t:o});
+    return `<div class="pilih" data-k="${k}">
+      <button type="button" aria-expanded="false"><span>${judul}: semua</span><span class="hit sembunyi">0</span></button>
+      <div class="menu">
+        <input type="search" placeholder="Cari ${judul.toLowerCase()}" aria-label="Cari ${judul}">
+        <div class="opsi">${daftar.map(o=>
+          `<label><input type="checkbox" value="${esc(o.v)}"><span>${esc(o.t)}</span></label>`).join('')}</div>
+      </div></div>`;
+  }).join('');
+
+  $$('#filterGrid .pilih').forEach(box=>{
+    const k = box.dataset.k, tombol = box.querySelector('button'), menu = box.querySelector('.menu');
+    tombol.addEventListener('click', e=>{
+      e.stopPropagation();
+      const buka = menu.classList.contains('buka');
+      $$('#filterGrid .menu').forEach(m=>m.classList.remove('buka'));
+      $$('#filterGrid .pilih>button').forEach(b=>b.setAttribute('aria-expanded','false'));
+      if(!buka){ menu.classList.add('buka'); tombol.setAttribute('aria-expanded','true'); menu.querySelector('input').focus(); }
+    });
+    menu.addEventListener('click', e=>e.stopPropagation());
+    menu.querySelector('input').addEventListener('input', e=>{
+      const q = e.target.value.toUpperCase();
+      menu.querySelectorAll('label').forEach(l=>{
+        l.style.display = l.textContent.toUpperCase().includes(q) ? '' : 'none';
+      });
+    });
+    menu.addEventListener('change', e=>{
+      if(e.target.type!=='checkbox') return;
+      const set = filterAktif[k];
+      e.target.checked ? set.add(e.target.value) : set.delete(e.target.value);
+      const judul = tombol.querySelector('span'), hit = tombol.querySelector('.hit');
+      const nama = {tahun:'Tahun',bulan:'Bulan',salesman:'Salesman',tipe:'Tipe',kota:'Kota'}[k];
+      judul.textContent = set.size ? nama+': '+(set.size===1 ? [...set][0] : set.size+' dipilih') : nama+': semua';
+      hit.classList.toggle('sembunyi', !set.size); hit.textContent = set.size;
+      saring();
+    });
+  });
+}
+document.addEventListener('click', ()=>{
+  $$('#filterGrid .menu').forEach(m=>m.classList.remove('buka'));
+  $$('#filterGrid .pilih>button').forEach(b=>b.setAttribute('aria-expanded','false'));
+});
+
+/* -------------------------------------------------------------- menyaring */
+
+function statusDari(r){
+  const n = CATATAN[r.rid];
+  if(!n || !n.status) return '';
+  return n.status;
+}
+
+function saring(){
+  const q = $('#cari').value.trim().toUpperCase();
+  TERSARING = DATA.filter(r=>{
+    if(filterAktif.tahun.size && !filterAktif.tahun.has(r.thn)) return false;
+    if(filterAktif.bulan.size && !filterAktif.bulan.has(String(r.bln))) return false;
+    if(filterAktif.salesman.size && !filterAktif.salesman.has(r.salesman)) return false;
+    if(filterAktif.tipe.size && !filterAktif.tipe.has(r.tipe)) return false;
+    if(filterAktif.kota.size && !filterAktif.kota.has(r.kota)) return false;
+    if(q && !r.cari.includes(q)) return false;
+    if(statusPil){
+      const n = CATATAN[r.rid], st = statusDari(r);
+      if(statusPil==='BARU'  && n && n.status) return false;
+      if(statusPil==='NOWA'  && !((n && n.bukanWa) || !r.wa)) return false;
+      if(['LOW','HOT','PLAN'].includes(statusPil) && st!==statusPil) return false;
+    }
+    return true;
+  });
+  tampilSampai = 0;
+  gambarStat(); gambarDaftar(true);
+}
+
+function gambarStat(){
+  let hot=0, plan=0, low=0, jatuh=0, nowa=0;
+  const hi = isoTgl(hariIni());
+  TERSARING.forEach(r=>{
+    const n = CATATAN[r.rid];
+    if(n){ if(n.status==='HOT')hot++; else if(n.status==='PLAN')plan++; else if(n.status==='LOW')low++;
+      if(n.rencana && n.rencana <= hi) jatuh++; if(n.bukanWa) nowa++; }
+    if(!r.wa && !(n&&n.bukanWa)) nowa++;
+  });
+  $('#stat').innerHTML = `
+    <div><div class="num">${TERSARING.length.toLocaleString('id-ID')}</div><small>Pelanggan tersaring</small></div>
+    <div class="plan"><div class="num">${plan}</div><small>Plan SPK</small></div>
+    <div class="hot"><div class="num">${hot}</div><small>Hot</small></div>
+    <div><div class="num">${low}</div><small>Low</small></div>
+    <div class="due"><div class="num">${jatuh}</div><small>Perlu difollow up</small></div>
+    <div><div class="num">${nowa}</div><small>Tanpa nomor WA</small></div>`;
+}
+
+/* -------------------------------------------------------------- kartu */
+
+function pesanWA(r){
+  return (setelan.templat||'')
+    .replace(/{nama}/g, r.nama||'Bapak/Ibu').replace(/{tipe}/g, r.tipe||r.varian||'unit Daihatsu')
+    .replace(/{tahun}/g, r.thn||'').replace(/{kota}/g, r.kota||'')
+    .replace(/{nopol}/g, r.nopol||'').replace(/{saya}/g, setelan.saya||'');
+}
+
+function kartuHTML(r){
+  const n = CATATAN[r.rid] || {};
+  const st = n.status || '';
+  const tanpaWa = n.bukanWa || !r.wa;
+  const hi = isoTgl(hariIni());
+  const jatuh = n.rencana && n.rencana <= hi;
+  const tag = st==='HOT' ? '<span class="tag t-HOT">HOT</span>'
+            : st==='PLAN'? '<span class="tag t-PLAN">PLAN SPK</span>'
+            : st==='LOW' ? '<span class="tag t-LOW">LOW</span>' : '';
+  const tagWa = tanpaWa ? '<span class="tag t-WA">Bukan nomor WA</span>' : '';
+  const rinci = [
+    r.varian || r.tipe, r.thn, r.kota, r.nopol, r.leasing
+  ].filter(Boolean).map(esc).join(' · ');
+
+  return `<article class="kartu s-${st||'x'} ${jatuh?'jatuh':''}" data-rid="${r.rid}">
+    <div class="kepala"><h3>${esc(r.nama||'(tanpa nama)')}</h3>${tag}${tagWa}</div>
+    <p class="rinci">${rinci}
+      ${r.salesman ? `<br>Salesman <b>${esc(r.salesman)}</b>` : ''}
+      <br><span class="nohp">${esc(hpTampil(r.wa || normalHp(r.hpAda)) || 'nomor tidak ada')}</span>
+    </p>
+    ${n.hasil ? `<div class="catat">${esc(n.hasil)}<em>Dicatat ${esc(n.terakhir||n.diperbarui||'')}${
+        n.rencana ? ' · follow up lagi '+esc(tglIndo(n.rencana)) : ''}</em></div>` : ''}
+    ${jatuh ? `<div class="catat" style="border-left-color:var(--red);background:#FFF3F3">Jadwal follow up sudah tiba (${esc(tglIndo(n.rencana))}).</div>` : ''}
+    <div class="aksi">
+      <button class="wa" data-a="wa" ${r.wa?'':'disabled style="opacity:.45"'}>
+        <svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 2a10 10 0 0 0-8.6 15L2 22l5.2-1.4A10 10 0 1 0 12 2Zm5.2 14c-.2.6-1.2 1.2-1.7 1.2-.5.1-1 .1-1.7-.1-.4-.1-.9-.3-1.6-.6-2.8-1.2-4.6-4-4.7-4.2-.1-.2-1.1-1.4-1.1-2.7s.7-1.9.9-2.2c.2-.2.5-.3.7-.3h.5c.2 0 .4 0 .6.5l.8 1.9c.1.2.1.4 0 .5l-.4.5c-.1.2-.3.3-.1.6.2.3.7 1.2 1.6 2 1.1.9 2 1.2 2.2 1.4.3.1.4.1.6-.1l.8-1c.2-.2.3-.2.6-.1l1.8.9c.3.1.4.2.5.3.1.2.1.6-.1 1.2Z"/></svg>
+        Chat WA</button>
+      <button class="tel" data-a="tel" ${r.hpAda?'':'disabled style="opacity:.45"'}>
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 16.9v3a2 2 0 0 1-2.2 2 19.8 19.8 0 0 1-8.6-3.1 19.5 19.5 0 0 1-6-6A19.8 19.8 0 0 1 2.1 4.2 2 2 0 0 1 4.1 2h3a2 2 0 0 1 2 1.7c.1 1 .4 1.9.7 2.8a2 2 0 0 1-.5 2.1L8.1 9.9a16 16 0 0 0 6 6l1.3-1.2a2 2 0 0 1 2.1-.5c.9.3 1.8.6 2.8.7a2 2 0 0 1 1.7 2Z"/></svg>
+        Telepon</button>
+      <button class="ai" data-a="ai">AI Listening</button>
+      <button data-a="catatan">Catatan</button>
+      <button data-a="vcf">Simpan kontak</button>
+    </div>
+  </article>`;
+}
+
+function gambarDaftar(ulang){
+  const wadah = $('#daftar');
+  if(ulang) wadah.innerHTML = '';
+  if(!TERSARING.length){
+    wadah.innerHTML = `<div class="kosong"><h3>Tidak ada yang cocok</h3>
+      <p>${DATA.length ? 'Longgarkan filternya atau ubah kata pencarian.' : 'Buka Pengaturan, isi alamat Web App, lalu tekan Hubungkan dan ambil data.'}</p></div>`;
+    $('#muatLagi').innerHTML=''; return;
+  }
+  const batas = Math.min(tampilSampai + 40, TERSARING.length);
+  let html = '';
+  for(let i=tampilSampai; i<batas; i++) html += kartuHTML(TERSARING[i]);
+  wadah.insertAdjacentHTML('beforeend', html);
+  tampilSampai = batas;
+  $('#muatLagi').innerHTML = tampilSampai < TERSARING.length
+    ? `<button class="tbl" id="lagi">Tampilkan 40 lagi (${(TERSARING.length-tampilSampai).toLocaleString('id-ID')} tersisa)</button>` : '';
+  const lagi = $('#lagi'); if(lagi) lagi.onclick = ()=>gambarDaftar(false);
+}
+
+function perbaruiKartu(rid){
+  const el = document.querySelector(`.kartu[data-rid="${rid}"]`);
+  const r = DATA.find(x=>x.rid===rid);
+  if(el && r) el.outerHTML = kartuHTML(r);
+}
+
+/* -------------------------------------------------------------- aksi kartu */
+
+document.addEventListener('click', e=>{
+  const t = e.target.closest('[data-a]'); if(!t) return;
+  const rid = t.closest('.kartu').dataset.rid;
+  const r = DATA.find(x=>x.rid===rid); if(!r) return;
+  const aksi = t.dataset.a;
+  if(aksi==='wa')       bukaWA(r);
+  if(aksi==='tel')      bukaTelepon(r);
+  if(aksi==='ai')       bukaAi(r);
+  if(aksi==='catatan')  bukaCatatan(r);
+  if(aksi==='vcf')      unduhVcf([r]);
+});
+
+function bukaWA(r){
+  if(!r.wa) return roti('Nomor ini bukan nomor seluler, jadi tidak bisa dichat.');
+  window.open(`https://wa.me/${r.wa}?text=${encodeURIComponent(pesanWA(r))}`, '_blank');
+  tandaiDihubungi(r);
+}
+function bukaTelepon(r){
+  const hp = r.wa || normalHp(r.hpAda);
+  if(!hp) return roti('Nomor telepon kosong.');
+  location.href = 'tel:+' + hp;
+  tandaiDihubungi(r);
+}
+function tandaiDihubungi(r){
+  const n = CATATAN[r.rid] || (CATATAN[r.rid] = { rid:r.rid, nama:r.nama, hp:r.wa||r.hpAda });
+  n.terakhir = isoTgl(new Date());
+  simpanCatatanLokal();
+}
+
+/* -------------------------------------------------------- modal catatan */
+
+const CEPAT_HASIL = [
+  'Tidak diangkat','Nomor tidak aktif','Minta ditelepon lagi nanti','Unit sudah dijual',
+  'Minta simulasi kredit','Tertarik tukar tambah','Belum ada rencana','Minta datang ke showroom'
+];
+
+function bukaCatatan(r){
+  ridAktif = r.rid;
+  const n = CATATAN[r.rid] || {};
+  $('#subCatatan').textContent = `${r.nama||'(tanpa nama)'} · ${r.varian||r.tipe||''} ${r.thn||''}`.trim();
+  statusPilih = n.status || '';
+  $$('#pilihStatus button').forEach(b=>b.setAttribute('aria-pressed', String(b.dataset.v===statusPilih)));
+  $('#hasil').value = n.hasil || '';
+  $('#rencana').value = n.rencana || '';
+  $('#hpEdit').value = hpTampil(r.wa) || r.hpAda || '';
+  $('#bukanWa').checked = !!n.bukanWa || (!r.wa && !!r.hpAda);
+  $('#cepatHasil').innerHTML = CEPAT_HASIL.map(x=>`<button type="button">${x}</button>`).join('');
+  $('#tiraiCatatan').classList.add('buka');
+}
+$('#cepatHasil').addEventListener('click', e=>{
+  if(e.target.tagName!=='BUTTON') return;
+  const f = $('#hasil'); f.value = (f.value ? f.value.replace(/\s*$/,'. ') : '') + e.target.textContent;
+  f.focus();
+});
+$$('#pilihStatus button').forEach(b=> b.onclick = ()=>{
+  statusPilih = statusPilih===b.dataset.v ? '' : b.dataset.v;
+  $$('#pilihStatus button').forEach(x=>x.setAttribute('aria-pressed', String(x.dataset.v===statusPilih)));
+});
+$$('#tiraiCatatan .cepat button[data-hari]').forEach(b=> b.onclick = ()=>{
+  if(b.dataset.hari===''){ $('#rencana').value=''; return; }
+  const d = hariIni(); d.setDate(d.getDate() + +b.dataset.hari);
+  $('#rencana').value = isoTgl(d);
+});
+$('#batalCatatan').onclick = ()=> $('#tiraiCatatan').classList.remove('buka');
+$('#tiraiCatatan').addEventListener('click', e=>{ if(e.target.id==='tiraiCatatan') e.currentTarget.classList.remove('buka'); });
+
+$('#simpanCatatan').onclick = async ()=>{
+  const r = DATA.find(x=>x.rid===ridAktif); if(!r) return;
+  const hpBaru = normalHp($('#hpEdit').value);
+  const hpLama = r.wa || normalHp(r.hpAda);
+  const n = CATATAN[ridAktif] = Object.assign(CATATAN[ridAktif]||{}, {
+    rid: ridAktif, nama: r.nama, hp: hpBaru,
+    status: statusPilih, hasil: $('#hasil').value.trim(),
+    terakhir: isoTgl(new Date()), rencana: $('#rencana').value,
+    bukanWa: $('#bukanWa').checked
+  });
+  if(hpBaru && hpBaru!==hpLama){
+    r.hp = hpBaru; r.wa = seluler(hpBaru) ? hpBaru : ''; r.hpAda = hpBaru;
+    if(typeof (setelan.peta||{}).hp === 'number'){
+      antre({ action:'ubahSel', rid: ridAktif, kolom: setelan.peta.hp, nilai: hpBaru.replace(/^62/,'0') });
+    }
+    await db.set('baris', DATA);
+  }
+  simpanCatatanLokal();
+  antre(Object.assign({action:'simpan'}, n));
+  $('#tiraiCatatan').classList.remove('buka');
+  perbaruiKartu(ridAktif); gambarStat(); gambarPengingat(); loncengPengingat();
+  roti('Catatan tersimpan.');
+  kurasAntre();
+};
+
+/* ------------------------------------------------- antrean simpan ke sheet */
+
+function antre(muatan){ ANTRE.push(muatan); simpanAntre(); }
+
+async function kurasAntre(){
+  if(!ANTRE.length || !setelan.api) return;
+  const salinan = ANTRE.slice();
+  const sisa = [];
+  chip('kerja', `Menyimpan ${salinan.length}…`);
+  for(const m of salinan){
+    try{
+      const j = await kirim(m);
+      if(!j || !j.ok) sisa.push(m);
+    }catch(err){ sisa.push(m); }
+  }
+  ANTRE = sisa; simpanAntre();
+  if(sisa.length) chip('gagal', `${sisa.length} belum tersimpan`);
+  else chip('ok', `${DATA.length.toLocaleString('id-ID')} baris siap`);
+}
+
+/* -------------------------------------------------------- kartu kontak vcf */
+
+function vcardSatu(r, tgl){
+  const nama = namaKontak(r, tgl);
+  const hp = r.wa || normalHp(r.hpAda);
+  const n = CATATAN[r.rid] || {};
+  const catatan = [
+    r.varian || r.tipe, r.thn && ('Tahun DO '+r.thn), r.nopol, r.kota,
+    r.salesman && ('Salesman '+r.salesman), n.status && ('Status '+n.status),
+    n.hasil && ('Terakhir: '+n.hasil)
+  ].filter(Boolean).join(' | ');
+  return ['BEGIN:VCARD','VERSION:3.0',
+    'N:'+nama+';;;', 'FN:'+nama,
+    hp ? 'TEL;TYPE=CELL:+'+hp : '',
+    r.alamat ? 'ADR;TYPE=HOME:;;'+String(r.alamat).replace(/[;,\n]/g,' ')+';'+(r.kota||'')+';;;' : '',
+    catatan ? 'NOTE:'+catatan.replace(/\n/g,' ') : '',
+    'END:VCARD'].filter(Boolean).join('\r\n');
+}
+
+function unduhVcf(daftar){
+  const tgl = new Date();
+  const isi = daftar.map(r=>vcardSatu(r,tgl)).join('\r\n');
+  const nama = daftar.length===1
+    ? namaKontak(daftar[0], tgl) + '.vcf'
+    : `Kontak Follow Up ${capTgl(tgl).replace(' ','')} (${daftar.length}).vcf`;
+  unduh(isi, nama, 'text/vcard;charset=utf-8');
+  if(daftar.length===1) roti('Tersimpan sebagai "' + namaKontak(daftar[0], tgl) + '"');
+  else roti(daftar.length + ' kontak diunduh. Buka berkasnya untuk mengimpor.');
+}
+
+function unduh(isi, nama, tipe){
+  const b = new Blob(['\ufeff'+isi], {type:tipe});
+  const a = document.createElement('a');
+  a.href = URL.createObjectURL(b); a.download = nama;
+  document.body.appendChild(a); a.click();
+  setTimeout(()=>{ URL.revokeObjectURL(a.href); a.remove(); }, 1500);
+}
+
+$('#btnVcfMassal').onclick = ()=>{
+  const pakai = TERSARING.filter(r=>r.hpAda);
+  if(!pakai.length) return roti('Tidak ada nomor pada hasil saringan ini.');
+  if(pakai.length>800 && !confirm(`${pakai.length} kontak akan diunduh dalam satu berkas. Lanjutkan?`)) return;
+  unduhVcf(pakai);
+};
+
+$('#btnCsv').onclick = ()=>{
+  const kol = ['Nama','No HP','WhatsApp','Tipe','Varian','Tahun','Kota','Salesman','Nopol','Status','Hasil pembicaraan','Rencana follow up'];
+  const baris = TERSARING.map(r=>{
+    const n = CATATAN[r.rid]||{};
+    return [r.nama, hpTampil(normalHp(r.hpAda)), r.wa?'Ya':'Tidak', r.tipe, r.varian, r.thn, r.kota,
+      r.salesman, r.nopol, n.status||'', n.hasil||'', n.rencana?tglIndo(n.rencana):''];
+  });
+  const csv = [kol, ...baris].map(b=>b.map(v=>`"${String(v==null?'':v).replace(/"/g,'""')}"`).join(',')).join('\r\n');
+  unduh(csv, `Follow Up ${capTgl(new Date()).replace(' ','')}.csv`, 'text/csv;charset=utf-8');
+};
+
+/* ============================ AI LISTENING ============================ */
+
+const ATURAN = [
+  // teks pemicu, bobot (+ mendekati SPK, - menjauh), alasan
+  [['saya ambil','jadi ambil','deal','sepakat','oke saya beli','saya beli','fix ambil','ambil yang ini'], 40,'Menyatakan mau mengambil unit'],
+  [['tanda jadi','booking fee','dp dulu','bayar dp','transfer dp','uang muka saya'], 40,'Menyebut tanda jadi atau pembayaran DP'],
+  [['kirim berkas','ktp','kartu keluarga','kk saya','npwp','slip gaji','syarat kredit','lengkapi berkas'], 35,'Siap menyiapkan berkas pengajuan'],
+  [['kapan bisa kirim','kapan unit datang','kapan bisa dikirim','inden berapa lama'], 30,'Menanyakan pengiriman unit'],
+  [['besok saya datang','saya ke showroom','saya mampir','kapan bisa ketemu','saya datang'], 25,'Berencana datang ke showroom'],
+  [['test drive','coba mobilnya','mau lihat unitnya','lihat unit','cek unit'], 22,'Ingin melihat atau mencoba unit'],
+  [['simulasi','angsuran','cicilan','berapa dp','dp berapa','bunga','tenor','kredit berapa'], 20,'Menanyakan hitungan kredit'],
+  [['harga berapa','berapa harganya','ada diskon','bisa nego','potongan harga','promo'], 16,'Menanyakan harga atau diskon'],
+  [['warna apa','ready warna','stok ada','ada unitnya','tipe apa saja'], 14,'Menanyakan ketersediaan unit'],
+  [['tukar tambah','trade in','tt mobil lama','jual mobil lama'], 18,'Membuka peluang tukar tambah'],
+  [['minggu depan','bulan depan','habis panen','setelah gajian','nanti kabari','tunggu kabar'], 4,'Berminat tapi menunda waktu'],
+  [['masih pikir','pikir dulu','dipertimbangkan','lihat dulu','belum pasti'], -8,'Masih menimbang'],
+  [['belum ada dana','belum ada uang','belum sanggup','lagi tidak ada budget','belum rejeki'], -18,'Terkendala dana'],
+  [['tahun depan','nanti dulu','belum butuh','belum ada rencana','belum kepikiran'], -20,'Belum ada rencana dekat'],
+  [['sudah beli','sudah ambil di','sudah punya baru','sudah pakai merek'], -30,'Sudah membeli di tempat lain'],
+  [['tidak minat','ga minat','nggak minat','tidak tertarik','jangan hubungi','jangan telepon lagi','stop'], -45,'Menolak ditawari'],
+  [['salah sambung','bukan saya','salah nomor','sudah meninggal'], -50,'Nomor tidak sesuai']
+];
+
+let pengenal = null, sedangRekam = false, teksFinal = '', ridAi = null, hasilAiTerakhir = null;
+
+function bukaAi(r){
+  ridAi = r.rid; teksFinal = ''; hasilAiTerakhir = null;
+  $('#subAi').textContent = `${r.nama||'(tanpa nama)'} · ${r.varian||r.tipe||''} ${r.thn||''}`.trim();
+  $('#transkrip').textContent = 'Belum ada teks.';
+  $('#tempel').value = ''; $('#hasilAi').innerHTML = ''; $('#barTerap').classList.add('sembunyi');
+  $('#statusRec').textContent = 'Ketuk untuk mulai mendengarkan. Aktifkan speaker saat menelepon supaya suara customer ikut terekam.';
+  $('#btnRec').classList.remove('on');
+  $('#tiraiAi').classList.add('buka');
+}
+$('#batalAi').onclick = ()=>{ hentikanRekam(); $('#tiraiAi').classList.remove('buka'); };
+$('#tiraiAi').addEventListener('click', e=>{ if(e.target.id==='tiraiAi'){ hentikanRekam(); e.currentTarget.classList.remove('buka'); } });
+
+$$('#tiraiAi .mode button').forEach(b=> b.onclick = ()=>{
+  $$('#tiraiAi .mode button').forEach(x=>x.setAttribute('aria-selected', String(x===b)));
+  $('#modeSuara').classList.toggle('sembunyi', b.dataset.m!=='suara');
+  $('#modeTeks').classList.toggle('sembunyi', b.dataset.m!=='teks');
+  if(b.dataset.m!=='suara') hentikanRekam();
+});
+
+$('#tempel').addEventListener('input', e=>{
+  teksFinal = e.target.value;
+  $('#transkrip').textContent = teksFinal || 'Belum ada teks.';
+});
+
+$('#btnRec').onclick = ()=> sedangRekam ? hentikanRekam() : mulaiRekam();
+
+function mulaiRekam(){
+  const SR = window.SpeechRecognition || window.webkitSpeechRecognition;
+  if(!SR){
+    $('#statusRec').textContent = 'Peramban ini belum mendukung pengenalan suara. Pakai Chrome di Android, atau pindah ke tab Tempel chat WhatsApp.';
+    return;
+  }
+  pengenal = new SR();
+  pengenal.lang = 'id-ID'; pengenal.continuous = true; pengenal.interimResults = true;
+  pengenal.onresult = ev => {
+    let sementara = '';
+    for(let i=ev.resultIndex; i<ev.results.length; i++){
+      const t = ev.results[i][0].transcript;
+      if(ev.results[i].isFinal) teksFinal += t + ' '; else sementara += t;
+    }
+    $('#transkrip').innerHTML = esc(teksFinal) + (sementara ? `<span class="sementara">${esc(sementara)}</span>` : '');
+    $('#transkrip').scrollTop = $('#transkrip').scrollHeight;
+  };
+  pengenal.onerror = ev => {
+    $('#statusRec').textContent = ev.error==='not-allowed'
+      ? 'Izin mikrofon ditolak. Buka pengaturan situs dan izinkan mikrofon.'
+      : 'Perekaman terhenti (' + ev.error + '). Ketuk untuk mencoba lagi.';
+    hentikanRekam();
+  };
+  pengenal.onend = () => { if(sedangRekam){ try{ pengenal.start(); }catch(e){} } };
+  try{ pengenal.start(); }catch(e){}
+  sedangRekam = true;
+  $('#btnRec').classList.add('on');
+  $('#statusRec').textContent = 'Sedang mendengarkan. Ketuk lagi untuk berhenti.';
+}
+function hentikanRekam(){
+  sedangRekam = false;
+  $('#btnRec').classList.remove('on');
+  if(pengenal){ try{ pengenal.onend=null; pengenal.stop(); }catch(e){} pengenal=null; }
+  if($('#statusRec').textContent.startsWith('Sedang')) $('#statusRec').textContent = 'Perekaman berhenti. Tekan Analisa jawaban customer.';
+}
+
+function analisa(teks){
+  const t = ' ' + teks.toLowerCase().replace(/[^\wáéíóúàèìòùâêîôûäëïöüçñ\s]/g,' ').replace(/\s+/g,' ') + ' ';
+  let skor = 0; const alasan = [];
+  ATURAN.forEach(([kata, bobot, sebab])=>{
+    const kena = kata.find(k => t.includes(' '+k) || t.includes(k+' '));
+    if(kena){ skor += bobot; alasan.push({ sebab, kena, bobot }); }
+  });
+  // pertanyaan customer menandakan minat
+  const tanya = (teks.match(/\?/g)||[]).length;
+  if(tanya>=2){ skor += 6; alasan.push({sebab:'Customer banyak bertanya', kena:tanya+' pertanyaan', bobot:6}); }
+
+  // Plan SPK hanya kalau ada tanda komitmen nyata (mau ambil, bayar DP, kirim berkas),
+  // bukan sekadar banyak pertanyaan.
+  const komitmen = alasan.some(a => a.bobot >= 35);
+  let status, tundaHari;
+  if(komitmen && skor >= 35){ status='PLAN'; tundaHari=1; }
+  else if(skor >= 18){ status='HOT'; tundaHari=3; }
+  else if(skor <= -25){ status='LOW'; tundaHari=180; }
+  else if(skor <= 5){ status='LOW'; tundaHari=30; }
+  else { status='HOT'; tundaHari=7; }
+
+  return { status, skor, alasan, tundaHari, ringkas: ringkas(teks, alasan) };
+}
+
+function ringkas(teks, alasan){
+  const inti = alasan.slice(0,3).map(a=>a.sebab).join('. ');
+  const potong = teks.replace(/\s+/g,' ').trim().slice(0,180);
+  return (inti ? inti + '. ' : '') + (potong ? 'Kutipan: "' + potong + (teks.length>180?'…':'') + '"' : '');
+}
+
+$('#analisaAi').onclick = ()=>{
+  const teks = ($('#modeTeks').classList.contains('sembunyi') ? teksFinal : $('#tempel').value).trim();
+  if(teks.length < 12) return roti('Teksnya masih terlalu pendek untuk dianalisa.');
+  hentikanRekam();
+  const h = analisa(teks);
+  hasilAiTerakhir = { hasil:h, teks };
+  const warna = { PLAN:'var(--plan)', HOT:'var(--hot)', LOW:'var(--low)' }[h.status];
+  const label = { PLAN:'PLAN SPK', HOT:'HOT', LOW:'LOW' }[h.status];
+  const lebar = Math.max(4, Math.min(100, Math.round((h.skor + 50) / 1.4)));
+  $('#hasilAi').innerHTML = `<div class="hasilai">
+    <div class="vonis" style="color:${warna}">${label}</div>
+    <div class="bar"><i style="width:${lebar}%;background:${warna}"></i></div>
+    <small style="color:var(--ink-2)">Skor minat ${h.skor > 0 ? '+' : ''}${h.skor} · saran follow up lagi ${h.tundaHari} hari lagi</small>
+    ${h.alasan.length ? `<ul>${h.alasan.slice(0,6).map(a=>`<li>${esc(a.sebab)} <span style="opacity:.6">(“${esc(a.kena)}”)</span></li>`).join('')}</ul>`
+      : '<ul><li>Tidak ada kata kunci yang menonjol. Periksa sendiri sebelum memberi tanda.</li></ul>'}
+  </div>`;
+  $('#barTerap').classList.remove('sembunyi');
+};
+
+$('#terapAi').onclick = ()=>{
+  if(!hasilAiTerakhir) return;
+  const r = DATA.find(x=>x.rid===ridAi); if(!r) return;
+  const h = hasilAiTerakhir.hasil;
+  const d = hariIni(); d.setDate(d.getDate() + h.tundaHari);
+  const n = CATATAN[r.rid] = Object.assign(CATATAN[r.rid]||{}, {
+    rid:r.rid, nama:r.nama, status:h.status,
+    hasil: h.ringkas, rencana: isoTgl(d), terakhir: isoTgl(new Date()),
+    transkrip: hasilAiTerakhir.teks.slice(0, 4000)
+  });
+  simpanCatatanLokal();
+  $('#tiraiAi').classList.remove('buka');
+  hentikanRekam();
+  bukaCatatan(r);
+  roti('Hasil analisa dimasukkan. Periksa lalu simpan.');
+};
+
+/* ============================== PENGINGAT ============================== */
+
+function daftarPengingat(){
+  const hi = isoTgl(hariIni());
+  const lewat = [], kini = [], nanti = [];
+  DATA.forEach(r=>{
+    const n = CATATAN[r.rid];
+    if(!n || !n.rencana) return;
+    if(n.rencana < hi) lewat.push(r); else if(n.rencana === hi) kini.push(r); else nanti.push(r);
+  });
+  const urut = (a,b)=> (CATATAN[a.rid].rencana).localeCompare(CATATAN[b.rid].rencana);
+  return { lewat: lewat.sort(urut), kini: kini.sort(urut), nanti: nanti.sort(urut) };
+}
+
+function gambarPengingat(){
+  const { lewat, kini, nanti } = daftarPengingat();
+  const blok = (judul, arr, kelas)=> arr.length
+    ? `<h2 class="judulblok">${judul} (${arr.length})</h2><div class="daftar">${
+        arr.map(r=>kartuHTML(r).replace('class="kartu', 'class="kartu '+(kelas||''))).join('')}</div>` : '';
+  const isi = blok('Lewat jadwal', lewat, 'lewat') + blok('Hari ini', kini) + blok('Terjadwal berikutnya', nanti.slice(0,60));
+  $('#isiPengingat').innerHTML = isi || `<div class="kosong"><h3>Belum ada jadwal</h3>
+    <p>Setiap kali menyimpan catatan, isi tanggal follow up berikutnya. Jadwalnya muncul di sini.</p></div>`;
+}
+
+function loncengPengingat(){
+  const { lewat, kini } = daftarPengingat();
+  const n = lewat.length + kini.length;
+  $('#lonceng').textContent = n ? `(${n})` : '';
+  return n;
+}
+
+$('#btnIzinNotif').onclick = async ()=>{
+  if(!('Notification' in window)) return roti('Peramban ini tidak mendukung notifikasi.');
+  const izin = await Notification.requestPermission();
+  roti(izin==='granted' ? 'Notifikasi aktif. Aplikasi akan mengingatkan saat jadwal tiba.' : 'Notifikasi belum diizinkan.');
+  if(izin==='granted') cekPengingat();
+};
+
+let sudahDiingatkan = new Set();
+function cekPengingat(){
+  if(!('Notification' in window) || Notification.permission!=='granted') return;
+  const { lewat, kini } = daftarPengingat();
+  const semua = [...kini, ...lewat].slice(0,5);
+  semua.forEach(r=>{
+    if(sudahDiingatkan.has(r.rid)) return;
+    sudahDiingatkan.add(r.rid);
+    const n = CATATAN[r.rid];
+    new Notification('Waktunya follow up: ' + (r.nama||'pelanggan'), {
+      body: (n.hasil || 'Belum ada catatan') + '\nJadwal ' + tglIndo(n.rencana),
+      tag: 'fu-' + r.rid
+    });
+  });
+}
+setInterval(cekPengingat, 5*60*1000);
+
+$('#btnIcs').onclick = ()=>{
+  const { lewat, kini, nanti } = daftarPengingat();
+  const semua = [...lewat, ...kini, ...nanti];
+  if(!semua.length) return roti('Belum ada jadwal untuk diekspor.');
+  const baris = ['BEGIN:VCALENDAR','VERSION:2.0','PRODID:-//Daihatsu Tomohon//Follow Up//ID'];
+  semua.forEach(r=>{
+    const n = CATATAN[r.rid], t = n.rencana.replace(/-/g,'');
+    baris.push('BEGIN:VEVENT', 'UID:fu-'+r.rid+'@tomohon',
+      'DTSTART;VALUE=DATE:'+t, 'DTEND;VALUE=DATE:'+t,
+      'SUMMARY:Follow up ' + (r.nama||'') + ' (' + (n.status||'-') + ')',
+      'DESCRIPTION:' + String(n.hasil||'').replace(/\n/g,' ') + ' — ' + hpTampil(r.wa||normalHp(r.hpAda)),
+      'BEGIN:VALARM','TRIGGER:-PT9H','ACTION:DISPLAY','DESCRIPTION:Follow up','END:VALARM','END:VEVENT');
+  });
+  baris.push('END:VCALENDAR');
+  unduh(baris.join('\r\n'), 'Jadwal Follow Up.ics', 'text/calendar;charset=utf-8');
+};
+
+/* ============================== PENGATURAN ============================== */
+
+function gambarPeta(){
+  const kolom = setelan.kolom || [], p = setelan.peta || {};
+  if(!kolom.length){ $('#peta').innerHTML = '<p style="color:var(--ink-2);font-size:13px">Sambungkan dulu untuk membaca daftar kolom.</p>'; return; }
+  $('#peta').innerHTML = URUT_PETA.map(k=>`
+    <div class="isian" style="margin:0">
+      <label for="pk-${k}">${LABEL_PETA[k]}</label>
+      <select id="pk-${k}" data-k="${k}">
+        <option value="-1">— tidak dipakai —</option>
+        ${kolom.map((c,i)=>`<option value="${i}" ${p[k]===i?'selected':''}>${esc(c)}</option>`).join('')}
+      </select>
+    </div>`).join('');
+}
+
+$('#btnPeta').onclick = async ()=>{
+  const p = {};
+  $$('#peta select').forEach(s => p[s.dataset.k] = parseInt(s.value,10));
+  setelan.peta = p; simpanSet();
+  try{ const n = await tarikSemua(true); roti(`Pemetaan disimpan, ${n.toLocaleString('id-ID')} baris dimuat ulang.`); }
+  catch(err){ chip('gagal','Gagal'); roti(err.message); }
+};
+
+$('#btnSimpanSet').onclick = ()=>{
+  setelan.templat = $('#templat').value;
+  setelan.saya = $('#saya').value;
+  setelan.awalan = $('#awalan').value.trim() || 'Cs';
+  setelan.bhs = $('#bhs').value;
+  simpanSet(); contohkan(); roti('Pengaturan tersimpan.');
+};
+
+function contohkan(){
+  $('#contohNama').textContent = `${$('#awalan').value.trim()||'Cs'} JENNY NOVA LEMBONG ${capTglSementara()}`;
+}
+function capTglSementara(){
+  const d = new Date(), bl = $('#bhs').value==='EN' ? BULAN_EN : BULAN_ID;
+  return String(d.getDate()).padStart(2,'0')+' '+bl[d.getMonth()]+String(d.getFullYear()).slice(2);
+}
+['#awalan','#bhs'].forEach(s => $(s).addEventListener('input', contohkan));
+
+$$('.cepat button[data-sisip]').forEach(b => b.onclick = ()=>{
+  const f = $('#templat'), p = f.selectionStart ?? f.value.length;
+  f.value = f.value.slice(0,p) + b.dataset.sisip + f.value.slice(f.selectionEnd ?? p);
+  f.focus(); f.selectionStart = f.selectionEnd = p + b.dataset.sisip.length;
+});
+
+$('#btnHubung').onclick = async ()=>{
+  setelan.api = $('#api').value.trim().replace(/\s/g,''); simpanSet();
+  $('#statusApi').textContent = 'Menyambung…';
+  try{
+    const n = await tarikSemua(true);
+    $('#statusApi').textContent = `Tersambung ke sheet ${setelan.sheet}. ${n.toLocaleString('id-ID')} baris tersimpan di perangkat.`;
+    roti('Data siap dipakai.');
+  }catch(err){ chip('gagal','Gagal'); $('#statusApi').textContent = err.message; }
+};
+$('#btnUlangPenuh').onclick = ()=> $('#btnHubung').click();
+$('#btnSync').onclick = async ()=>{
+  try{ await kurasAntre(); const n = await tarikSemua(true); roti(`Sinkron selesai, ${n.toLocaleString('id-ID')} baris.`); }
+  catch(err){ chip('gagal','Gagal'); roti(err.message); }
+};
+$('#chipSync').onclick = ()=> $('#btnSync').click();
+
+$('#btnReset').onclick = ()=>{
+  Object.values(filterAktif).forEach(s=>s.clear());
+  statusPil=''; $('#cari').value='';
+  $$('#pilStatus button').forEach(b=>b.setAttribute('aria-pressed', String(!b.dataset.st)));
+  bangunFilter(); saring();
+};
+
+$('#cari').addEventListener('input', ()=>{ clearTimeout(window._c); window._c = setTimeout(saring, 220); });
+$('#pilStatus').addEventListener('click', e=>{
+  const b = e.target.closest('button'); if(!b) return;
+  statusPil = b.dataset.st;
+  $$('#pilStatus button').forEach(x=>x.setAttribute('aria-pressed', String(x===b)));
+  saring();
+});
+
+/* ================================ tab ================================ */
+
+$$('nav button').forEach(b => b.onclick = ()=>{
+  $$('nav button').forEach(x=>x.setAttribute('aria-selected', String(x===b)));
+  $$('.panel').forEach(p=>p.classList.toggle('aktif', p.id === 'p'+'-'+b.dataset.tab));
+  if(b.dataset.tab==='pengingat') gambarPengingat();
+  window.scrollTo({top:0});
+});
+
+/* =============================== mulai =============================== */
+
+async function mulai(){
+  $('#api').value = setelan.api || '';
+  $('#templat').value = setelan.templat;
+  $('#saya').value = setelan.saya;
+  $('#awalan').value = setelan.awalan;
+  $('#bhs').value = setelan.bhs;
+  contohkan();
+  gambarPeta();
+
+  const simpanan = await db.get('baris').catch(()=>null);
+  if(simpanan && simpanan.length){
+    DATA = simpanan;
+    const w = await db.get('waktu').catch(()=>0);
+    chip('ok', `${DATA.length.toLocaleString('id-ID')} baris tersimpan`);
+    $('#subjudul').textContent = `${setelan.sheet||'Database DO'} — tersimpan di perangkat`;
+    bangunFilter(); saring(); gambarPengingat(); loncengPengingat();
+    if(setelan.api && Date.now() - (w||0) > 6*60*60*1000){
+      tarikSemua().catch(()=>chip('gagal','Sinkron gagal'));
+    }
+  }else{
+    saring();
+    if(setelan.api) tarikSemua().catch(err=>{ chip('gagal','Gagal'); roti(err.message); });
+  }
+
+  // teks yang dibagikan dari WhatsApp lewat menu Bagikan
+  const par = new URLSearchParams(location.search);
+  const bagikan = par.get('text') || par.get('title');
+  if(bagikan){
+    $$('nav button')[0].click();
+    setTimeout(()=>{
+      $('#tiraiAi').classList.add('buka');
+      $$('#tiraiAi .mode button')[1].click();
+      $('#tempel').value = bagikan; teksFinal = bagikan;
+      $('#transkrip').textContent = bagikan;
+      $('#subAi').textContent = 'Teks dari WhatsApp — pilih pelanggannya setelah menganalisa.';
+      roti('Chat diterima. Tekan Analisa jawaban customer.');
+    }, 400);
+  }
+
+  if(location.hash === '#pengingat') $$('nav button')[1].click();
+
+  kurasAntre();
+  loncengPengingat();
+  if('serviceWorker' in navigator && location.protocol.startsWith('http')){
+    navigator.serviceWorker.register('sw.js').catch(()=>{});
+  }
+}
+document.addEventListener('visibilitychange', ()=>{ if(!document.hidden){ kurasAntre(); cekPengingat(); } });
+mulai();
+</script>
+</body>
+</html>

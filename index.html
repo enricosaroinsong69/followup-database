@@ -6,6 +6,9 @@
 <meta name="theme-color" content="#0F2E47">
 <title>Follow Up Pelanggan — Daihatsu Tomohon</title>
 <link rel="manifest" href="manifest.webmanifest">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@500;600;700&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
 <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='14' fill='%230F2E47'/%3E%3Cpath d='M18 40c0-8 6-14 14-14s14 6 14 14' stroke='%23E60012' stroke-width='5' fill='none' stroke-linecap='round'/%3E%3Ccircle cx='32' cy='21' r='5' fill='%23fff'/%3E%3C/svg%3E">
 <style>
   :root{
@@ -220,6 +223,30 @@
     background:var(--navy);color:#fff;padding:11px 18px;border-radius:999px;font-size:13.5px;z-index:90;
     box-shadow:0 6px 24px rgba(15,46,71,.35);max-width:90vw;text-align:center
   }
+
+  /* ---------- promo ---------- */
+  #prBingkai{background:linear-gradient(180deg,#DDE4EC,#C9D4E0);border:1px solid var(--line);border-radius:10px;
+    padding:10px;display:flex;justify-content:center;margin-bottom:14px}
+  #prKanvas{width:100%;max-width:240px;height:auto;border-radius:6px;display:block;box-shadow:0 6px 22px rgba(15,46,71,.28)}
+  .unggah{border:1.5px dashed var(--line);border-radius:9px;padding:14px;text-align:center;color:var(--ink-2);
+    font-size:13px;cursor:pointer;background:#fff;display:block}
+  .unggah strong{color:var(--navy);display:block;font-size:14.5px;margin-bottom:2px}
+  input[type=file]{display:none}
+  .geser{display:grid;grid-template-columns:64px 1fr;align-items:center;gap:10px;margin-bottom:6px}
+  .geser span{font-size:12px;color:var(--ink-2);font-weight:600}
+  .geser input[type=range]{width:100%;accent-color:var(--navy)}
+  .pilihan{display:flex;flex-wrap:wrap;gap:6px}
+  .pilihan button{border:1px solid var(--line);background:#fff;color:var(--ink);padding:7px 12px;
+    border-radius:999px;font-size:12.5px;font-weight:500}
+  .pilihan button[aria-pressed=true]{background:var(--navy);border-color:var(--navy);color:#fff;font-weight:600}
+  .duo{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+  .lipat{border:1px solid var(--line);border-radius:9px;background:#fff;margin-bottom:10px;overflow:hidden}
+  .lipat>summary{padding:11px 13px;font-weight:600;font-size:14px;cursor:pointer;list-style:none;
+    display:flex;justify-content:space-between;align-items:center}
+  .lipat>summary::-webkit-details-marker{display:none}
+  .lipat>summary::after{content:"+";color:var(--ink-2);font-size:18px;line-height:1}
+  .lipat[open]>summary::after{content:"\2013"}
+  .lipat>div{padding:0 13px 13px}
   .sembunyi{display:none!important}
 </style>
 </head>
@@ -328,6 +355,16 @@
         <label for="saya">Nama Anda (mengisi {saya})</label>
         <input id="saya" placeholder="Enrico — Daihatsu Tomohon">
       </div>
+      <div class="duo">
+        <div class="isian">
+          <label for="namaSales">Nama sales pada gambar promo</label>
+          <input id="namaSales" placeholder="Enrico">
+        </div>
+        <div class="isian">
+          <label for="hpSales">No HP sales pada gambar promo</label>
+          <input id="hpSales" inputmode="tel" placeholder="0852-xxxx-xxxx">
+        </div>
+      </div>
       <div class="isian">
         <label for="awalan">Awalan nama kontak</label>
         <input id="awalan" value="Cs">
@@ -409,6 +446,102 @@
     <div class="tombolbar">
       <button class="batal" id="batalCatatan">Batal</button>
       <button class="simpan" id="simpanCatatan">Simpan ke spreadsheet</button>
+    </div>
+  </div>
+</div>
+
+
+<!-- ============ MODAL PROMO ============ -->
+<div class="tirai" id="tiraiPromo">
+  <div class="modal" role="dialog" aria-modal="true" aria-labelledby="jdlPromo">
+    <h2 id="jdlPromo">Gambar promo</h2>
+    <p class="sub" id="subPromo"></p>
+
+    <div id="prBingkai"><canvas id="prKanvas" width="1080" height="1350"></canvas></div>
+
+    <details class="lipat" open>
+      <summary>Isi promo</summary>
+      <div>
+        <div class="isian">
+          <label for="prJudul">Judul besar</label>
+          <input id="prJudul" maxlength="34">
+        </div>
+        <div class="isian">
+          <label for="prTipe">Tipe yang ditawarkan</label>
+          <input id="prTipe" list="prDaftarTipe" autocomplete="off" placeholder="Sigra 1.2 R Deluxe">
+          <datalist id="prDaftarTipe">
+            <option>Ayla</option><option>Sirion</option><option>Sigra</option><option>Xenia</option>
+            <option>Terios</option><option>Rocky</option><option>Luxio</option>
+            <option>Gran Max Pick Up</option><option>Gran Max Blind Van</option><option>Gran Max Minibus</option>
+          </datalist>
+        </div>
+        <div class="duo">
+          <div class="isian"><label for="prDp">DP mulai (Rp)</label><input id="prDp" inputmode="numeric"></div>
+          <div class="isian"><label for="prAng">Angsuran (Rp)</label><input id="prAng" inputmode="numeric"></div>
+        </div>
+        <div class="duo">
+          <div class="isian"><label for="prTenor">Tenor (bulan)</label><input id="prTenor" inputmode="numeric"></div>
+          <div class="isian"><label for="prBerlaku">Berlaku sampai</label><input id="prBerlaku"></div>
+        </div>
+        <div class="isian" style="margin-bottom:0">
+          <label for="prBonus">Keuntungan (satu baris satu poin, maksimal 4)</label>
+          <textarea id="prBonus"></textarea>
+        </div>
+      </div>
+    </details>
+
+    <details class="lipat">
+      <summary>Foto kendaraan</summary>
+      <div>
+        <label class="unggah" for="prFoto"><strong>Pilih foto</strong>Tersimpan per tipe, cukup sekali unggah</label>
+        <input type="file" id="prFoto" accept="image/*">
+        <p id="prStatusFoto" style="font-size:12.5px;color:var(--wa);font-weight:600;margin:8px 0 0"></p>
+        <div id="prAturFoto" class="sembunyi" style="margin-top:10px">
+          <div class="geser"><span>Ukuran <b id="prNilaiZoom" style="font-weight:700">100%</b></span><input type="range" id="prZoom" min="40" max="260" value="100"></div>
+          <div class="geser"><span>Geser ↔</span><input type="range" id="prGx" min="-100" max="100" value="0"></div>
+          <div class="geser"><span>Geser ↕</span><input type="range" id="prGy" min="-100" max="100" value="0"></div>
+          <button class="tbl" id="prHapusFoto" style="margin-top:6px">Hapus foto tipe ini</button>
+        </div>
+      </div>
+    </details>
+
+    <details class="lipat">
+      <summary>Bentuk gambar</summary>
+      <div>
+        <div class="isian"><label>Ukuran</label>
+          <div class="pilihan" id="prUkuran">
+            <button data-v="1080x1350">Kiriman chat 4:5</button>
+            <button data-v="1080x1920">Status 9:16</button>
+            <button data-v="1080x1080">Kotak 1:1</button>
+          </div>
+        </div>
+        <div class="isian"><label>Susunan</label>
+          <div class="pilihan" id="prSusunan">
+            <button data-v="panel">Foto di panel</button>
+            <button data-v="penuh">Foto latar penuh</button>
+          </div>
+        </div>
+        <div class="isian" style="margin-bottom:0"><label>Warna</label>
+          <div class="pilihan" id="prWarna">
+            <button data-v="merah">Merah</button>
+            <button data-v="navy">Navy</button>
+            <button data-v="terang">Terang</button>
+          </div>
+        </div>
+      </div>
+    </details>
+
+    <p class="sub" style="margin:2px 0 0;font-size:12.5px">
+      Angka yang tampil ikut apa yang Anda isi. Periksa lagi sebelum dikirim.
+    </p>
+
+    <div class="tombolbar">
+      <button class="batal" id="prTutup">Tutup</button>
+      <button class="simpan" id="prKirim" style="background:var(--wa)">Kirim gambar + pesan</button>
+    </div>
+    <div class="tombolbar" style="margin-top:8px">
+      <button class="batal" id="prSimpan">Simpan gambar</button>
+      <button class="batal" id="prSalin">Salin teks pesan</button>
     </div>
   </div>
 </div>
@@ -813,6 +946,7 @@ function kartuHTML(r){
         Telepon</button>
       <button class="ai" data-a="ai">AI Listening</button>
       <button data-a="catatan">Catatan</button>
+      <button data-a="promo" style="border-color:var(--red);color:var(--red)">Promo</button>
       <button data-a="vcf">Simpan kontak</button>
     </div>
   </article>`;
@@ -853,6 +987,7 @@ document.addEventListener('click', e=>{
   if(aksi==='tel')      bukaTelepon(r);
   if(aksi==='ai')       bukaAi(r);
   if(aksi==='catatan')  bukaCatatan(r);
+  if(aksi==='promo')    bukaPromo(r);
   if(aksi==='vcf')      unduhVcf([r]);
 });
 
@@ -1264,7 +1399,9 @@ $('#btnSimpanSet').onclick = ()=>{
   setelan.saya = $('#saya').value;
   setelan.awalan = $('#awalan').value.trim() || 'Cs';
   setelan.bhs = $('#bhs').value;
-  simpanSet(); contohkan(); roti('Pengaturan tersimpan.');
+  setelan.namaSales = $('#namaSales').value.trim();
+  setelan.hpSales = $('#hpSales').value.trim();
+  simpanSet(); contohkan(); jadwalPromo(); roti('Pengaturan tersimpan.');
 };
 
 function contohkan(){
@@ -1322,6 +1459,405 @@ $$('nav button').forEach(b => b.onclick = ()=>{
   window.scrollTo({top:0});
 });
 
+/* ============================== GAMBAR PROMO ============================== */
+
+const promo = Object.assign({
+  judul:'Promo Awal Bulan', tipe:'', dp:'15000000', ang:'4250000', tenor:'47', berlaku:'',
+  bonus:'Bebas 3x angsuran\nKaca film & karpet dasar\nServis gratis 4 tahun\nProses 1 hari, unit ready',
+  ukuran:'1080x1350', susunan:'panel', warna:'merah'
+}, setelan.promo || {});
+let prGeser = { zoom:100, gx:0, gy:0 };
+let prGambar = null, prKunciFoto = '', ridPromo = null;
+const prKanvas = $('#prKanvas'), prCtx = prKanvas.getContext('2d');
+
+const TEMA_PROMO = {
+  merah:{dasar:'#C10010',dasar2:'#8A000B',teks:'#FFFFFF',redup:'#FFC9CC',aksen:'#FFFFFF',aksenTeks:'#C10010',kaki:'#12202D'},
+  navy: {dasar:'#0F2E47',dasar2:'#071B2C',teks:'#FFFFFF',redup:'#A8C0D4',aksen:'#E60012',aksenTeks:'#FFFFFF',kaki:'#071B2C'},
+  terang:{dasar:'#EEF1F5',dasar2:'#DCE3EB',teks:'#12202D',redup:'#5B6B7B',aksen:'#E60012',aksenTeks:'#FFFFFF',kaki:'#0F2E47'}
+};
+
+function rupiah(n){
+  const x = parseInt(String(n).replace(/\D/g,''),10);
+  return (!x || isNaN(x)) ? '' : x.toLocaleString('id-ID');
+}
+function kotakBulat(c,x,y,w,h,r){
+  c.beginPath(); c.moveTo(x+r,y);
+  c.arcTo(x+w,y,x+w,y+h,r); c.arcTo(x+w,y+h,x,y+h,r);
+  c.arcTo(x,y+h,x,y,r); c.arcTo(x,y,x+w,y,r); c.closePath();
+}
+function muatKe(c,teks,maksLebar,ukuranAwal,gaya){
+  let u = ukuranAwal;
+  do{ c.font = gaya.replace('__', u+'px'); if(c.measureText(teks).width <= maksLebar) break; u -= 2; } while(u > 14);
+  return u;
+}
+function gambarSampul(c,im,x,y,w,h,zoom,gx,gy){
+  const skala = Math.max(w/im.width, h/im.height) * (zoom/100);
+  const dw = im.width*skala, dh = im.height*skala;
+  // Math.abs supaya arah geser tetap sama saat foto diperkecil sampai lebih kecil dari kotaknya
+  c.drawImage(im, x+(w-dw)/2 + (gx/100)*Math.abs(dw-w)/2,
+                  y+(h-dh)/2 + (gy/100)*Math.abs(dh-h)/2, dw, dh);
+}
+
+/** Warna rata-rata tepi foto, dipakai sebagai latar saat foto diperkecil. */
+function latarFoto(im){
+  if(im._latar) return im._latar;
+  let hasil = '#1a1a1a';
+  try{
+    const n = 12, cv = document.createElement('canvas');
+    cv.width = n; cv.height = n;
+    const cc = cv.getContext('2d', { willReadFrequently:true });
+    cc.drawImage(im, 0, 0, n, n);
+    const d = cc.getImageData(0, 0, n, n).data;
+    let r=0, g=0, b=0, j=0;
+    for(let y=0; y<n; y++) for(let x=0; x<n; x++){
+      if(x>0 && x<n-1 && y>0 && y<n-1) continue;      // hanya piksel tepi
+      const i = (y*n+x)*4;
+      r += d[i]; g += d[i+1]; b += d[i+2]; j++;
+    }
+    hasil = `rgb(${Math.round(r/j)},${Math.round(g/j)},${Math.round(b/j)})`;
+  }catch(e){}
+  im._latar = hasil;
+  return hasil;
+}
+
+let prTimer;
+function jadwalPromo(){ clearTimeout(prTimer); prTimer = setTimeout(lukisPromo, 60); }
+
+function lukisPromo(){
+  const b = promo.ukuran.split('x');
+  prKanvas.width = +b[0]; prKanvas.height = +b[1];
+  const W = prKanvas.width, H = prKanvas.height, S = W/1080, c = prCtx;
+  let t = TEMA_PROMO[promo.warna];
+  c.clearRect(0,0,W,H);
+  const penuh = promo.susunan==='penuh' && prGambar;
+
+  const g = c.createLinearGradient(0,0,W*0.4,H);
+  g.addColorStop(0,t.dasar); g.addColorStop(1,t.dasar2);
+  c.fillStyle = g; c.fillRect(0,0,W,H);
+
+  const r = DATA.find(x=>x.rid===ridPromo) || {};
+  const nama = r.nama || '';
+  const tipe = (promo.tipe||'').trim(), judul = (promo.judul||'').trim();
+  const dp = rupiah(promo.dp), ang = rupiah(promo.ang), tenor = (promo.tenor||'').trim();
+  const berlaku = (promo.berlaku||'').trim();
+  const bonus = (promo.bonus||'').split('\n').map(x=>x.trim()).filter(Boolean).slice(0,4);
+  const sales = (setelan.namaSales||'').trim(), hpS = (setelan.hpSales||'').trim();
+
+  const kakiH = Math.round(126*S), pad = Math.round(56*S);
+  let y = 0;
+
+  if(penuh){
+    if(prGeser.zoom < 100){ c.fillStyle = latarFoto(prGambar); c.fillRect(0,0,W,H); }
+    gambarSampul(c,prGambar,0,0,W,H,prGeser.zoom,prGeser.gx,prGeser.gy);
+    const tirai = c.createLinearGradient(0,H*0.18,0,H);
+    tirai.addColorStop(0,'rgba(0,0,0,0)'); tirai.addColorStop(0.42,'rgba(4,14,24,.55)'); tirai.addColorStop(1,'rgba(4,14,24,.94)');
+    c.fillStyle = tirai; c.fillRect(0,0,W,H);
+    t = {dasar:t.dasar,dasar2:t.dasar2,teks:'#FFFFFF',redup:'#C9D6E2',aksen:'#E60012',aksenTeks:'#FFFFFF',kaki:'rgba(4,14,24,.96)'};
+  }
+
+  y = pad;
+  c.fillStyle = t.aksen==='#FFFFFF' ? 'rgba(255,255,255,.16)' : 'rgba(230,0,18,.95)';
+  const lp = Math.round(300*S), tp = Math.round(52*S);
+  kotakBulat(c,pad,y,lp,tp,tp/2); c.fill();
+  c.fillStyle = penuh ? '#fff' : (promo.warna==='terang' ? '#fff' : t.teks);
+  c.font = '600 '+Math.round(26*S)+'px Inter, sans-serif';
+  c.textBaseline = 'middle';
+  c.fillText('Daihatsu Tomohon', pad+Math.round(26*S), y+tp/2+1);
+  c.textBaseline = 'alphabetic';
+  y += tp + Math.round(34*S);
+
+  if(nama){
+    c.fillStyle = t.redup;
+    c.font = '500 '+Math.round(28*S)+'px Inter, sans-serif';
+    c.fillText('Khusus untuk '+nama, pad, y+Math.round(20*S));
+    y += Math.round(52*S);
+  }
+  if(judul){
+    const uk = muatKe(c,judul.toUpperCase(),W-pad*2,Math.round(96*S),"700 __ 'Barlow Condensed', Inter, sans-serif");
+    c.fillStyle = t.teks;
+    c.font = '700 '+uk+"px 'Barlow Condensed', Inter, sans-serif";
+    c.fillText(judul.toUpperCase(), pad, y+uk*0.78);
+    y += uk*0.96 + Math.round(10*S);
+  }
+  if(tipe){
+    const uk2 = muatKe(c,tipe,W-pad*2,Math.round(46*S),'600 __ Inter, sans-serif');
+    c.fillStyle = t.redup;
+    c.font = '600 '+uk2+'px Inter, sans-serif';
+    c.fillText(tipe, pad, y+uk2*0.85);
+    y += uk2 + Math.round(26*S);
+  }
+
+  if(!penuh){
+    const sisaBawah = Math.round((bonus.length ? bonus.length*54+40 : 0)*S) + Math.round(210*S) + kakiH;
+    const tinggiFoto = Math.max(Math.round(240*S), H-y-sisaBawah-Math.round(30*S));
+    if(prGambar){
+      c.save();
+      kotakBulat(c,pad,y,W-pad*2,tinggiFoto,Math.round(26*S)); c.clip();
+      c.fillStyle = latarFoto(prGambar); c.fillRect(pad,y,W-pad*2,tinggiFoto);
+      gambarSampul(c,prGambar,pad,y,W-pad*2,tinggiFoto,prGeser.zoom,prGeser.gx,prGeser.gy);
+      c.restore();
+      c.strokeStyle = 'rgba(255,255,255,.22)'; c.lineWidth = Math.max(1,2*S);
+      kotakBulat(c,pad,y,W-pad*2,tinggiFoto,Math.round(26*S)); c.stroke();
+    } else {
+      c.save();
+      kotakBulat(c,pad,y,W-pad*2,tinggiFoto,Math.round(26*S));
+      c.fillStyle = 'rgba(255,255,255,.10)'; c.fill();
+      c.setLineDash([Math.round(12*S),Math.round(10*S)]);
+      c.strokeStyle = 'rgba(255,255,255,.4)'; c.lineWidth = Math.max(1,2*S); c.stroke();
+      c.setLineDash([]);
+      c.fillStyle = promo.warna==='terang' ? '#5B6B7B' : 'rgba(255,255,255,.75)';
+      c.font = '500 '+Math.round(28*S)+'px Inter, sans-serif';
+      c.textAlign = 'center';
+      c.fillText('Belum ada foto untuk tipe ini', W/2, y+tinggiFoto/2+Math.round(10*S));
+      c.textAlign = 'left'; c.restore();
+    }
+    y += tinggiFoto + Math.round(34*S);
+  } else {
+    y = H - kakiH - Math.round((bonus.length*56+250)*S);
+  }
+
+  const kotakH = Math.round(150*S), lebarKotak = (W-pad*2-Math.round(18*S))/2;
+  function kotakHarga(x,label,nilai,ekor,utama){
+    kotakBulat(c,x,y,lebarKotak,kotakH,Math.round(18*S));
+    c.fillStyle = utama ? t.aksen : (promo.warna==='terang' ? 'rgba(15,46,71,.08)' : 'rgba(255,255,255,.13)');
+    c.fill();
+    const wl = utama ? (t.aksen==='#FFFFFF' ? 'rgba(193,0,16,.75)' : 'rgba(255,255,255,.8)') : t.redup;
+    c.fillStyle = wl;
+    c.font = '600 '+Math.round(24*S)+'px Inter, sans-serif';
+    c.fillText(label, x+Math.round(24*S), y+Math.round(44*S));
+    const tn = 'Rp '+nilai;
+    const ukN = muatKe(c,tn,lebarKotak-Math.round(48*S),Math.round(52*S),"700 __ 'Barlow Condensed', Inter, sans-serif");
+    c.fillStyle = utama ? t.aksenTeks : t.teks;
+    c.font = '700 '+ukN+"px 'Barlow Condensed', Inter, sans-serif";
+    c.fillText(tn, x+Math.round(24*S), y+Math.round(100*S));
+    if(ekor){
+      c.fillStyle = wl;
+      c.font = '500 '+Math.round(22*S)+'px Inter, sans-serif';
+      c.fillText(ekor, x+Math.round(24*S), y+Math.round(130*S));
+    }
+  }
+  if(dp) kotakHarga(pad,'DP mulai',dp,'',true);
+  if(ang) kotakHarga(pad+lebarKotak+Math.round(18*S),'Angsuran',ang,tenor?('x '+tenor+' bulan'):'',false);
+  if(dp||ang) y += kotakH + Math.round(30*S);
+
+  bonus.forEach(b=>{
+    const rr = Math.round(11*S);
+    c.beginPath(); c.arc(pad+rr, y+Math.round(16*S), rr, 0, Math.PI*2);
+    c.fillStyle = t.aksen==='#FFFFFF' ? '#FFFFFF' : '#E60012'; c.fill();
+    c.strokeStyle = t.aksen==='#FFFFFF' ? '#C10010' : '#FFFFFF';
+    c.lineWidth = Math.max(2,3*S); c.lineCap = 'round';
+    c.beginPath();
+    c.moveTo(pad+rr-Math.round(5*S), y+Math.round(16*S));
+    c.lineTo(pad+rr-Math.round(1*S), y+Math.round(20*S));
+    c.lineTo(pad+rr+Math.round(6*S), y+Math.round(11*S));
+    c.stroke();
+    const ukB = muatKe(c,b,W-pad*2-Math.round(46*S),Math.round(30*S),'500 __ Inter, sans-serif');
+    c.fillStyle = t.teks;
+    c.font = '500 '+ukB+'px Inter, sans-serif';
+    c.fillText(b, pad+Math.round(42*S), y+Math.round(25*S));
+    y += Math.round(54*S);
+  });
+
+  if(berlaku){
+    c.fillStyle = t.redup;
+    c.font = '500 '+Math.round(23*S)+'px Inter, sans-serif';
+    c.fillText('Berlaku sampai '+berlaku, pad, y+Math.round(34*S));
+  }
+
+  c.fillStyle = t.kaki; c.fillRect(0,H-kakiH,W,kakiH);
+  c.fillStyle = '#E60012'; c.fillRect(0,H-kakiH,W,Math.max(3,5*S));
+  const yk = H-kakiH+Math.round(52*S);
+  c.fillStyle = '#FFFFFF';
+  c.font = '700 '+Math.round(34*S)+"px 'Barlow Condensed', Inter, sans-serif";
+  c.fillText(sales || 'Daihatsu Tomohon', pad, yk);
+  c.fillStyle = '#A8C0D4';
+  c.font = '500 '+Math.round(25*S)+'px Inter, sans-serif';
+  c.fillText(hpS || 'Hubungi cabang Tomohon', pad, yk+Math.round(38*S));
+  c.textAlign = 'right';
+  c.fillStyle = 'rgba(255,255,255,.5)';
+  c.font = '600 '+Math.round(22*S)+'px Inter, sans-serif';
+  c.fillText('D745', W-pad, yk+Math.round(20*S));
+  c.textAlign = 'left';
+}
+
+/* -------- foto per tipe, tersimpan di perangkat -------- */
+function kunciFotoTipe(){ return 'foto:' + (promo.tipe||'umum').trim().toLowerCase().replace(/\s+/g,' '); }
+
+async function muatFotoTipe(){
+  prKunciFoto = kunciFotoTipe();
+  const d = await db.get(prKunciFoto).catch(()=>null);
+  if(d) pasangFotoPromo(d, true);
+  else { prGambar = null; $('#prStatusFoto').textContent=''; $('#prAturFoto').classList.add('sembunyi'); jadwalPromo(); }
+}
+function pasangFotoPromo(dataUrl, dariSimpanan){
+  const im = new Image();
+  im.onload = ()=>{
+    prGambar = im;
+    $('#prStatusFoto').textContent = dariSimpanan ? 'Foto tersimpan dipakai' : 'Foto baru dipakai';
+    $('#prAturFoto').classList.remove('sembunyi');
+    jadwalPromo();
+  };
+  im.src = dataUrl;
+}
+function kecilkanFoto(dataUrl, maks){
+  return new Promise(res=>{
+    const im = new Image();
+    im.onload = ()=>{
+      const w = im.width, h = im.height;
+      if(w<=maks && h<=maks) return res(dataUrl);
+      const sk = maks/Math.max(w,h), cv = document.createElement('canvas');
+      cv.width = Math.round(w*sk); cv.height = Math.round(h*sk);
+      cv.getContext('2d').drawImage(im,0,0,cv.width,cv.height);
+      res(cv.toDataURL('image/jpeg',0.88));
+    };
+    im.onerror = ()=>res(dataUrl);
+    im.src = dataUrl;
+  });
+}
+$('#prFoto').addEventListener('change', e=>{
+  const f = e.target.files && e.target.files[0]; if(!f) return;
+  const baca = new FileReader();
+  baca.onload = async ()=>{
+    const kecil = await kecilkanFoto(baca.result, 1600);
+    prKunciFoto = kunciFotoTipe();
+    await db.set(prKunciFoto, kecil).catch(()=>{});
+    pasangFotoPromo(kecil, false);
+    roti('Foto tersimpan untuk tipe ini.');
+  };
+  baca.readAsDataURL(f);
+  e.target.value = '';
+});
+$('#prHapusFoto').onclick = async ()=>{
+  await db.set(kunciFotoTipe(), '').catch(()=>{});
+  prGambar = null; $('#prStatusFoto').textContent=''; $('#prAturFoto').classList.add('sembunyi');
+  jadwalPromo(); roti('Foto dihapus.');
+};
+[['#prZoom','zoom'],['#prGx','gx'],['#prGy','gy']].forEach(([sel,k])=>{
+  $(sel).addEventListener('input', e=>{
+    prGeser[k] = +e.target.value;
+    if(k==='zoom') $('#prNilaiZoom').textContent = prGeser.zoom + '%';
+    jadwalPromo();
+  });
+});
+
+/* -------- isian promo -------- */
+const IKAT_PROMO = [['#prJudul','judul'],['#prTipe','tipe'],['#prDp','dp'],['#prAng','ang'],
+  ['#prTenor','tenor'],['#prBerlaku','berlaku'],['#prBonus','bonus']];
+IKAT_PROMO.forEach(([sel,k])=>{
+  $(sel).addEventListener('input', e=>{
+    promo[k] = e.target.value;
+    setelan.promo = promo; simpanSet();
+    if(k==='tipe') muatFotoTipe(); else jadwalPromo();
+  });
+});
+[['#prUkuran','ukuran'],['#prSusunan','susunan'],['#prWarna','warna']].forEach(([sel,k])=>{
+  $(sel).addEventListener('click', e=>{
+    const b = e.target.closest('button'); if(!b) return;
+    promo[k] = b.dataset.v; setelan.promo = promo; simpanSet();
+    $$(sel+' button').forEach(x=>x.setAttribute('aria-pressed', String(x===b)));
+    jadwalPromo();
+  });
+});
+
+/* -------- buka, teks, kirim -------- */
+function bukaPromo(r){
+  ridPromo = r.rid;
+  if(!promo.tipe) promo.tipe = r.tipe || r.varian || '';
+  if(!promo.berlaku){
+    const akhir = new Date(new Date().getFullYear(), new Date().getMonth()+1, 0);
+    promo.berlaku = akhir.getDate()+' '+BULAN_PANJANG[akhir.getMonth()]+' '+akhir.getFullYear();
+  }
+  $('#subPromo').textContent = `Untuk ${r.nama||'(tanpa nama)'}${r.varian||r.tipe ? ' · pemilik '+(r.varian||r.tipe)+' '+(r.thn||'') : ''}`.trim();
+  IKAT_PROMO.forEach(([sel,k])=> $(sel).value = promo[k] || '');
+  [['#prUkuran','ukuran'],['#prSusunan','susunan'],['#prWarna','warna']].forEach(([sel,k])=>{
+    $$(sel+' button').forEach(x=>x.setAttribute('aria-pressed', String(x.dataset.v===promo[k])));
+  });
+  prGeser = { zoom:100, gx:0, gy:0 };
+  $('#prZoom').value = 100; $('#prGx').value = 0; $('#prGy').value = 0;
+  $('#prNilaiZoom').textContent = '100%';
+  $('#tiraiPromo').classList.add('buka');
+  muatFotoTipe();
+  // gambar ulang setelah Barlow Condensed selesai dimuat
+  if(document.fonts && document.fonts.ready) document.fonts.ready.then(jadwalPromo);
+}
+$('#prTutup').onclick = ()=> $('#tiraiPromo').classList.remove('buka');
+$('#tiraiPromo').addEventListener('click', e=>{ if(e.target.id==='tiraiPromo') e.currentTarget.classList.remove('buka'); });
+
+function teksPromo(r){
+  const b = [];
+  const sales = (setelan.namaSales||'').trim() || (setelan.saya||'').split('—')[0].trim();
+  b.push(r.nama ? `Selamat siang ${r.nama}, ini ${sales} dari Daihatsu Tomohon.` : 'Halo, ini penawaran dari Daihatsu Tomohon.');
+  b.push('');
+  if(promo.tipe) b.push('Penawaran untuk '+promo.tipe+':');
+  if(rupiah(promo.dp)) b.push('• DP mulai Rp '+rupiah(promo.dp));
+  if(rupiah(promo.ang)) b.push('• Angsuran Rp '+rupiah(promo.ang)+(promo.tenor?(' x '+promo.tenor+' bulan'):''));
+  (promo.bonus||'').split('\n').map(x=>x.trim()).filter(Boolean).slice(0,4).forEach(x=>b.push('• '+x));
+  if(promo.berlaku){ b.push(''); b.push('Berlaku sampai '+promo.berlaku+'.'); }
+  b.push('');
+  b.push('Kalau berkenan, saya bantu hitungkan simulasi sesuai budget Bapak/Ibu.');
+  const hpS = (setelan.hpSales||'').trim();
+  if(sales||hpS) b.push(sales + (hpS ? ' — '+hpS : ''));
+  return b.join('\n');
+}
+
+function namaBerkasPromo(r){
+  const t = (promo.tipe||'promo').replace(/[^\w\s-]/g,'').trim().replace(/\s+/g,'_');
+  const n = (r && r.nama ? r.nama.replace(/[^\w\s-]/g,'').trim().replace(/\s+/g,'_')+'_' : '');
+  const d = new Date(), p = x => String(x).padStart(2,'0');
+  return `Promo_${t}_${n}${p(d.getDate())}${p(d.getMonth()+1)}${d.getFullYear()}.png`;
+}
+function unduhBlob(blob, nama){
+  const a = document.createElement('a');
+  a.href = URL.createObjectURL(blob); a.download = nama;
+  document.body.appendChild(a); a.click();
+  setTimeout(()=>{ URL.revokeObjectURL(a.href); a.remove(); }, 3000);
+}
+async function salinTeksKe(t){
+  try{ await navigator.clipboard.writeText(t); return true; }
+  catch(e){
+    const a = document.createElement('textarea');
+    a.value = t; a.style.position='fixed'; a.style.opacity='0';
+    document.body.appendChild(a); a.select();
+    let ok = false;
+    try{ ok = document.execCommand('copy'); }catch(e2){}
+    a.remove(); return ok;
+  }
+}
+
+$('#prSimpan').onclick = ()=>{
+  lukisPromo();
+  const r = DATA.find(x=>x.rid===ridPromo);
+  prKanvas.toBlob(b=>{ unduhBlob(b, namaBerkasPromo(r)); roti('Gambar tersimpan.'); }, 'image/png');
+};
+$('#prSalin').onclick = async ()=>{
+  const r = DATA.find(x=>x.rid===ridPromo) || {};
+  roti(await salinTeksKe(teksPromo(r)) ? 'Teks pesan disalin.' : 'Salin gagal — tekan lama teksnya.');
+};
+
+$('#prKirim').onclick = ()=>{
+  const r = DATA.find(x=>x.rid===ridPromo); if(!r) return;
+  lukisPromo();
+  prKanvas.toBlob(async blob=>{
+    const berkas = new File([blob], namaBerkasPromo(r), {type:'image/png'});
+    const teks = teksPromo(r);
+    if(navigator.canShare && navigator.canShare({files:[berkas]})){
+      try{
+        await navigator.share({ files:[berkas], text:teks });
+        tandaiDihubungi(r); simpanCatatanLokal();
+        $('#tiraiPromo').classList.remove('buka');
+        roti('Terkirim lewat menu berbagi.');
+        return;
+      }catch(err){ if(err && err.name==='AbortError') return; }
+    }
+    // perangkat tanpa berbagi berkas: simpan gambar, salin teks, buka chat
+    unduhBlob(blob, namaBerkasPromo(r));
+    await salinTeksKe(teks);
+    roti('Gambar tersimpan dan teks disalin. Lampirkan gambarnya di WhatsApp.');
+    if(r.wa) setTimeout(()=>window.open('https://wa.me/'+r.wa+'?text='+encodeURIComponent(teks), '_blank'), 1200);
+    tandaiDihubungi(r); simpanCatatanLokal();
+  }, 'image/png');
+};
+
 /* =============================== mulai =============================== */
 
 async function mulai(){
@@ -1330,6 +1866,8 @@ async function mulai(){
   $('#saya').value = setelan.saya;
   $('#awalan').value = setelan.awalan;
   $('#bhs').value = setelan.bhs;
+  $('#namaSales').value = setelan.namaSales || (setelan.saya||'').split('—')[0].trim();
+  $('#hpSales').value = setelan.hpSales || '';
   contohkan();
   gambarPeta();
 
